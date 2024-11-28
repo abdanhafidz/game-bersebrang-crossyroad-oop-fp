@@ -7,35 +7,27 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-
+import com.bersebranggame.canvas.*;
+import com.bersebranggame.objects.character.*;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     Texture backgroundTexture;
-    Texture chickenTexture;
-    Texture dropTexture;
-    Sound dropSound;
-    Music music;
+    Chicken chickenPlayer;
     SpriteBatch spriteBatch;
-    FitViewport viewport;
-    Sprite chickenSprite; 
+    Gameplay gamePlay;
     @Override
     public void create() {
         backgroundTexture = new Texture("background.jpg");
-        chickenTexture = new Texture("chicken.png");
-        // dropTexture = new Texture("drop.png");
         spriteBatch = new SpriteBatch();
-        viewport = new FitViewport(8, 5);
-        chickenSprite = new Sprite(chickenTexture); // Initialize the sprite based on the texture
-        chickenSprite.setSize(1, 1);
+        gamePlay = new Gameplay();
+        chickenPlayer = new Chicken();
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height, true); // true centers the camera
+        gamePlay.viewPort.update(width, height, true); // true centers the camera
     }
     @Override
     public void render() {
@@ -46,25 +38,21 @@ public class Main extends ApplicationAdapter {
     }
     
     private void input() {
-    float speed = 4f;
-    float delta = Gdx.graphics.getDeltaTime(); // retrieve the current delta
-    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-        if(chickenSprite.getX() < viewport.getWorldWidth() - 1){
-            chickenSprite.translateX(speed * delta );
-        }
-    }if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-        if(chickenSprite.getX() >= 0){
-            chickenSprite.translateX(-speed * delta );
-        }
-    }if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-        if(chickenSprite.getY() < viewport.getWorldHeight() - 1){
-            chickenSprite.translateY(speed * delta );
-        }
-    }if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-        if(chickenSprite.getY() >= 0){
-            chickenSprite.translateY(-speed * delta );
-        }
+    gamePlay.delta = 15;
+    if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+        chickenPlayer.moveLeft();
     }
+    if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+        chickenPlayer.moveRight();
+    }
+    if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+        chickenPlayer.moveUp();
+    }
+
+    if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+        chickenPlayer.moveDown();
+    }
+
     }
     
     private void logic() {
@@ -73,13 +61,13 @@ public class Main extends ApplicationAdapter {
     
     private void draw() {
         ScreenUtils.clear(Color.BROWN);
-        viewport.apply();
-        spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
+        gamePlay.viewPort.apply();
+        spriteBatch.setProjectionMatrix(gamePlay.viewPort.getCamera().combined);
         spriteBatch.begin();
-        float worldWidth = viewport.getWorldWidth();
-        float worldHeight = viewport.getWorldHeight();
+        float worldWidth = gamePlay.viewPort.getWorldWidth();
+        float worldHeight = gamePlay.viewPort.getWorldHeight();
         spriteBatch.draw(backgroundTexture,0,0, worldWidth, worldHeight);
-        chickenSprite.draw(spriteBatch);
+        chickenPlayer.sprite.draw(spriteBatch);
         spriteBatch.end();
     }
 }
