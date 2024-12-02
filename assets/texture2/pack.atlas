@@ -1,0 +1,120 @@
+
+pack.png
+size: 1024, 1024
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+char2
+  rotate: false
+  xy: 2, 2
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+grass
+  rotate: false
+  xy: 2, 504
+  size: 970, 505
+  orig: 970, 505
+  offset: 0, 0
+  index: -1
+pack2
+  rotate: false
+  xy: 504, 2
+  size: 500, 500
+  orig: 500, 500
+  offset: 0, 0
+  index: -1
+
+pack2.png
+size: 1024, 1024
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+car
+  rotate: false
+  xy: 2, 634
+  size: 941, 265
+  orig: 941, 265
+  offset: 0, 0
+  index: -1
+river
+  rotate: false
+  xy: 2, 2
+  size: 946, 328
+  orig: 946, 328
+  offset: 0, 0
+  index: -1
+road
+  rotate: false
+  xy: 2, 332
+  size: 800, 300
+  orig: 800, 300
+  offset: 0, 0
+  index: -1
+
+pack3.png
+size: 1024, 1024
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+Chicken2
+  rotate: false
+  xy: 2, 2
+  size: 800, 800
+  orig: 800, 800
+  offset: 0, 0
+  index: -1
+
+pack4.png
+size: 1024, 1024
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+log
+  rotate: false
+  xy: 2, 2
+  size: 587, 425
+  orig: 587, 425
+  offset: 0, 0
+  index: -1
+truck
+  rotate: false
+  xy: 2, 429
+  size: 583, 428
+  orig: 583, 428
+  offset: 0, 0
+  index: -1
+
+pack5.png
+size: 1024, 1024
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+car2
+  rotate: false
+  xy: 2, 404
+  size: 647, 385
+  orig: 647, 385
+  offset: 0, 0
+  index: -1
+log2
+  rotate: false
+  xy: 2, 2
+  size: 623, 400
+  orig: 623, 400
+  offset: 0, 0
+  index: -1
+
+pack6.png
+size: 512, 512
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+grass2
+  rotate: false
+  xy: 2, 2
+  size: 470, 403
+  orig: 470, 403
+  offset: 0, 0
+  index: -1
