@@ -1,9 +1,10 @@
 package com.bersebranggame.objects.character;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bersebranggame.behaviour.Moveable;
 import com.bersebranggame.canvas.Gameplay;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 
 public class Character extends Gameplay implements Moveable {
     private int width, height;
@@ -83,30 +84,41 @@ public class Character extends Gameplay implements Moveable {
 
     // Methods for movement
     public void moveRight() {
-        super.delta = Gdx.graphics.getDeltaTime(); 
-        if(this.sprite.getX() < super.viewPort.getWorldWidth() - 1){
-            this.sprite.translateX(this.speed * super.delta);
+        Gameplay.delta = Gdx.graphics.getDeltaTime(); 
+        if(this.sprite.getX() < Gameplay.viewPort.getWorldWidth() - 1){
+            this.sprite.translateX(this.speed * Gameplay.delta);
         }
     }
 
     public void moveLeft() {
-        super.delta = Gdx.graphics.getDeltaTime(); 
+        Gameplay.delta = Gdx.graphics.getDeltaTime(); 
         if(this.sprite.getX() >= 0){
-            this.sprite.translateX(-this.speed * super.delta);
+            this.sprite.translateX(-this.speed * Gameplay.delta);
         }
     }
 
     public void moveUp() {
-        super.delta = Gdx.graphics.getDeltaTime(); 
-        if(this.sprite.getY() < super.viewPort.getWorldHeight() - 1){
-            this.sprite.translateY(this.speed * super.delta);
+        Gameplay.delta = Gdx.graphics.getDeltaTime(); 
+        if(this.sprite.getY() < Gameplay.viewPort.getWorldHeight() - 1){
+            this.sprite.translateY(this.speed * Gameplay.delta);
+        }else{
+            Gameplay.height +=1;
+            Gameplay.viewPort.setWorldHeight(Gameplay.height);
+            System.out.println(this.sprite.getY());
+            this.sprite.translateY(this.speed * Gameplay.delta);
+            Camera camera = Gameplay.viewPort.getCamera();
+            camera.position.y = this.sprite.getY(); // Fokus ke posisi ayam
+            camera.update();
+            Gameplay.viewPort.setCamera(camera);
+            Gameplay.viewPort.apply();
+            // System.out.println(Gameplay.height);
         }
     }
 
     public void moveDown() {
-        super.delta = Gdx.graphics.getDeltaTime(); 
+        Gameplay.delta = Gdx.graphics.getDeltaTime(); 
         if(this.sprite.getY() >= 0 ){
-            this.sprite.translateY(-this.speed * super.delta);
+            this.sprite.translateY(-this.speed * Gameplay.delta);
         }
     }
 
