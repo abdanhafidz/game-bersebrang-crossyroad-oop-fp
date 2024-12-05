@@ -1,6 +1,5 @@
 package com.bersebranggame.objects.character;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bersebranggame.behaviour.Moveable;
@@ -103,7 +102,7 @@ public class Character extends Gameplay implements Moveable, Spriteable {
         if(this.sprite.getY() < Gameplay.viewPort.getWorldHeight() - 1){
             this.sprite.translateY(this.speed * Gameplay.delta);
         }else{
-            Gameplay.spriteBatch.
+            // Gameplay.spriteBatch.
             // System.out.println(Gameplay.height);
         }
     }
