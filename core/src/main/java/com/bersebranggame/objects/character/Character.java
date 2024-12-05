@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bersebranggame.behaviour.Moveable;
 import com.bersebranggame.behaviour.Spriteable;
 import com.bersebranggame.canvas.Gameplay;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Character extends Gameplay implements Moveable, Spriteable {
     private int width, height;
     private float positionX, positionY, speed;
@@ -102,7 +103,10 @@ public class Character extends Gameplay implements Moveable, Spriteable {
         if(this.sprite.getY() < Gameplay.viewPort.getWorldHeight() - 1){
             this.sprite.translateY(this.speed * Gameplay.delta);
         }else{
-            // Gameplay.spriteBatch.
+            Gameplay.obstacles = Gameplay.createObstacles(); 
+            this.sprite.setY(0);
+            // Gameplay.spriteBatch = new SpriteBatch();
+            // Gameplay.spriteBatch.stop
             // System.out.println(Gameplay.height);
         }
     }

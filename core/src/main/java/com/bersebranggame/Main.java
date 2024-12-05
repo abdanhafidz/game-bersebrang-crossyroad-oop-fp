@@ -16,13 +16,11 @@ public class Main extends ApplicationAdapter {
     Texture backgroundTexture;
     Chicken chickenPlayer;
     SpriteBatch spriteBatch;
-    ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
     @Override
     public void create() {
         backgroundTexture = new Texture("background.jpg");
         spriteBatch = Gameplay.spriteBatch;
-        
-        obstacles.addAll(Gameplay.getObstacles());
+        Gameplay.obstacles = Gameplay.createObstacles();
         chickenPlayer = new Chicken();
     }
 
@@ -57,9 +55,20 @@ public class Main extends ApplicationAdapter {
     }
     
     private void logic() {
-    
+        if (spriteBatch == null) {
+            Gameplay.spriteBatch = new SpriteBatch();
+        }
+        spriteBatch = Gameplay.spriteBatch;
     }
-    
+    @Override
+    public void resume() {
+        super.resume();
+        // Reload SpriteBatch and texture if needed
+        if (spriteBatch == null) {
+            Gameplay.spriteBatch = new SpriteBatch();
+        }
+    }
+
     private void draw() {
         ScreenUtils.clear(Color.BROWN);
         Gameplay.viewPort.apply();
@@ -68,11 +77,16 @@ public class Main extends ApplicationAdapter {
         float worldWidth = Gameplay.viewPort.getWorldWidth();
         float worldHeight = Gameplay.viewPort.getWorldHeight();
         spriteBatch.draw(backgroundTexture,0,0, worldWidth, worldHeight);
-        for(Obstacle r_Obstacle : obstacles){
-            System.out.println("Create Obstacle");
+        for(Obstacle r_Obstacle : Gameplay.obstacles){
+            // if(i == 1){
+            //     System.out.println("Create Obstacle : " + r_Obstacle.getImage() + ", Position :" + r_Obstacle.sprite.getY());
+            // }
             r_Obstacle.sprite.draw(spriteBatch);
         }
         chickenPlayer.sprite.draw(spriteBatch);
         spriteBatch.end();
+    }
+    @Override
+    public void dispose() {
     }
 }

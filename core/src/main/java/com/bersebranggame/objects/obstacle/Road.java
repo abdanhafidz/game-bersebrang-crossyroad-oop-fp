@@ -4,7 +4,7 @@ public class Road extends Obstacle {
     public Road(){
         super(
             Gameplay.width,
-            3,
+            1,
             "road.png"
         );
     }

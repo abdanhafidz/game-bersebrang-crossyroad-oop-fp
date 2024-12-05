@@ -4,7 +4,7 @@ public class River extends Obstacle  {
     public River(){
         super(
             Gameplay.width,
-            3,
+            1,
             "river.png"
         );
     }
