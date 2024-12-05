@@ -10,7 +10,7 @@ public class Character extends Gameplay implements Moveable {
     private int width, height;
     private float positionX, positionY, speed;
     private String image;
-    // Default constructor
+    // Default conastructor
     public Character() {
         this.width = 0;
         this.height = 0;
@@ -41,7 +41,7 @@ public class Character extends Gameplay implements Moveable {
 
     // Constructor with optional width, height, and position (position defaults to 0, 0, width/height default to 50)
     public Character(float speed, String image) {
-        this(50, 50, 0, 0, speed, image); // Default width = 50, height = 50
+        this(32, 32, 0, 0, speed, image); // Default width = 50, height = 50
     }
 
     public float getSpeed() {
@@ -84,21 +84,21 @@ public class Character extends Gameplay implements Moveable {
 
     // Methods for movement
     public void moveRight() {
-        Gameplay.delta = Gdx.graphics.getDeltaTime(); 
+        Gameplay.delta = Gdx.graphics.getDeltaTime();
         if(this.sprite.getX() < Gameplay.viewPort.getWorldWidth() - 1){
             this.sprite.translateX(this.speed * Gameplay.delta);
         }
     }
 
     public void moveLeft() {
-        Gameplay.delta = Gdx.graphics.getDeltaTime(); 
+        Gameplay.delta = Gdx.graphics.getDeltaTime();
         if(this.sprite.getX() >= 0){
             this.sprite.translateX(-this.speed * Gameplay.delta);
         }
     }
 
     public void moveUp() {
-        Gameplay.delta = Gdx.graphics.getDeltaTime(); 
+        Gameplay.delta = Gdx.graphics.getDeltaTime();
         if(this.sprite.getY() < Gameplay.viewPort.getWorldHeight() - 1){
             this.sprite.translateY(this.speed * Gameplay.delta);
         }else{
@@ -116,7 +116,7 @@ public class Character extends Gameplay implements Moveable {
     }
 
     public void moveDown() {
-        Gameplay.delta = Gdx.graphics.getDeltaTime(); 
+        Gameplay.delta = Gdx.graphics.getDeltaTime();
         if(this.sprite.getY() >= 0 ){
             this.sprite.translateY(-this.speed * Gameplay.delta);
         }
@@ -124,5 +124,9 @@ public class Character extends Gameplay implements Moveable {
 
     public void collision() {
         // Collision logic here
+    }
+
+    public void dispose() {
+        texture.dispose();
     }
 }
