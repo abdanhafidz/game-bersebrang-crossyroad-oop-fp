@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bersebranggame.behaviour.Moveable;
+import com.bersebranggame.behaviour.Spriteable;
 import com.bersebranggame.canvas.Gameplay;
-
-public class Character extends Gameplay implements Moveable {
+public class Character extends Gameplay implements Moveable, Spriteable {
     private int width, height;
     private float positionX, positionY, speed;
     private String image;
@@ -65,18 +65,19 @@ public class Character extends Gameplay implements Moveable {
         this.sprite = new Sprite(texture);
     }
 
+    @Override
     public Sprite getSprite() {
         return sprite;
     }
-
+    @Override
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
-
+    @Override
     public Texture getTexture() {
         return texture;
     }
-
+    @Override
     public void setTexture(Texture texture) {
         this.texture = texture;
         this.sprite = new Sprite(texture);
@@ -102,15 +103,7 @@ public class Character extends Gameplay implements Moveable {
         if(this.sprite.getY() < Gameplay.viewPort.getWorldHeight() - 1){
             this.sprite.translateY(this.speed * Gameplay.delta);
         }else{
-            Gameplay.height +=1;
-            Gameplay.viewPort.setWorldHeight(Gameplay.height);
-            System.out.println(this.sprite.getY());
-            this.sprite.translateY(this.speed * Gameplay.delta);
-            Camera camera = Gameplay.viewPort.getCamera();
-            camera.position.y = this.sprite.getY(); // Fokus ke posisi ayam
-            camera.update();
-            Gameplay.viewPort.setCamera(camera);
-            Gameplay.viewPort.apply();
+            Gameplay.spriteBatch.
             // System.out.println(Gameplay.height);
         }
     }

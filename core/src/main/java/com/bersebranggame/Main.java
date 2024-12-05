@@ -9,16 +9,20 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.bersebranggame.canvas.Gameplay;
 import com.bersebranggame.objects.character.Chicken;
+import com.bersebranggame.objects.obstacle.Obstacle;
+import java.util.ArrayList;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     Texture backgroundTexture;
     Chicken chickenPlayer;
     SpriteBatch spriteBatch;
+    ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
     @Override
     public void create() {
         backgroundTexture = new Texture("background.jpg");
-        spriteBatch = new SpriteBatch();
-
+        spriteBatch = Gameplay.spriteBatch;
+        
+        obstacles.addAll(Gameplay.getObstacles());
         chickenPlayer = new Chicken();
     }
 
@@ -63,8 +67,11 @@ public class Main extends ApplicationAdapter {
         spriteBatch.begin();
         float worldWidth = Gameplay.viewPort.getWorldWidth();
         float worldHeight = Gameplay.viewPort.getWorldHeight();
-        System.out.println(worldHeight);
         spriteBatch.draw(backgroundTexture,0,0, worldWidth, worldHeight);
+        for(Obstacle r_Obstacle : obstacles){
+            System.out.println("Create Obstacle");
+            r_Obstacle.sprite.draw(spriteBatch);
+        }
         chickenPlayer.sprite.draw(spriteBatch);
         spriteBatch.end();
     }
