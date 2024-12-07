@@ -8,7 +8,7 @@ import com.bersebranggame.behaviour.Spriteable;
 import com.bersebranggame.canvas.Gameplay;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Character extends Gameplay implements Moveable, Spriteable {
-    private int width, height;
+    private float width, height;
     private float positionX, positionY, speed;
     private String image;
 
@@ -24,7 +24,7 @@ public class Character extends Gameplay implements Moveable, Spriteable {
     }
 
     // Constructor with all parameters
-    public Character(int width, int height, float positionX, float positionY, float speed, String image) {
+    public Character(float width, float height, float positionX, float positionY, float speed, String image) {
         this.width = width;
         this.height = height;
         this.positionX = positionX;
@@ -37,7 +37,7 @@ public class Character extends Gameplay implements Moveable, Spriteable {
     }
 
     // Constructor with optional position (position defaults to 0, 0)
-    public Character(int width, int height, float speed, String image) {
+    public Character(float width, float height, float speed, String image) {
         this(width, height, 0, 0, speed, image);
     }
 

@@ -31,7 +31,7 @@ public class Gameplay{
         Array<Obstacle> randomizer = new Array<>();
         randomizer.add(new River());
         randomizer.add(new Road());
-
+        // randomizer = [ObjRiver, ObjRoad]
 
         Random rand = new Random();
         int choosenIdx = rand.nextInt(1, 3);
