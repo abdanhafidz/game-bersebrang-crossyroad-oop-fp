@@ -6,6 +6,7 @@ public class River extends Obstacle  {
             Gameplay.width,
             1,
             "river.png"
+
         );
     }
 }

@@ -2,6 +2,7 @@ package com.bersebranggame.objects.character;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.bersebranggame.Main;
 import com.bersebranggame.behaviour.Moveable;
 import com.bersebranggame.behaviour.Spriteable;
 import com.bersebranggame.canvas.Gameplay;
@@ -10,6 +11,7 @@ public class Character extends Gameplay implements Moveable, Spriteable {
     private int width, height;
     private float positionX, positionY, speed;
     private String image;
+
     // Default constructor
     public Character() {
         this.width = 0;
@@ -85,34 +87,28 @@ public class Character extends Gameplay implements Moveable, Spriteable {
 
     // Methods for movement
     public void moveRight() {
-        Gameplay.delta = Gdx.graphics.getDeltaTime(); 
+        Gameplay.delta = Gdx.graphics.getDeltaTime();
         if(this.sprite.getX() < Gameplay.viewPort.getWorldWidth() - 1){
             this.sprite.translateX(this.speed * Gameplay.delta);
         }
     }
 
     public void moveLeft() {
-        Gameplay.delta = Gdx.graphics.getDeltaTime(); 
+        Gameplay.delta = Gdx.graphics.getDeltaTime();
         if(this.sprite.getX() >= 0){
             this.sprite.translateX(-this.speed * Gameplay.delta);
         }
     }
 
     public void moveUp() {
-        Gameplay.delta = Gdx.graphics.getDeltaTime(); 
+        Gameplay.delta = Gdx.graphics.getDeltaTime();
         if(this.sprite.getY() < Gameplay.viewPort.getWorldHeight() - 1){
             this.sprite.translateY(this.speed * Gameplay.delta);
-        }else{
-            Gameplay.obstacles = Gameplay.createObstacles(); 
-            this.sprite.setY(0);
-            // Gameplay.spriteBatch = new SpriteBatch();
-            // Gameplay.spriteBatch.stop
-            // System.out.println(Gameplay.height);
         }
     }
 
     public void moveDown() {
-        Gameplay.delta = Gdx.graphics.getDeltaTime(); 
+        Gameplay.delta = Gdx.graphics.getDeltaTime();
         if(this.sprite.getY() >= 0 ){
             this.sprite.translateY(-this.speed * Gameplay.delta);
         }

@@ -52,6 +52,7 @@ public class Obstacle extends Gameplay implements Spriteable  {
     public void setSprite(Sprite c_sprite){
         this.sprite = c_sprite;
     }
+
     public Texture getTexture(){
         return this.texture;
     }
@@ -63,4 +64,19 @@ public class Obstacle extends Gameplay implements Spriteable  {
         return this.sprite;
     }
 
+    public float getPositionX() {
+        return positionX;
+    }
+
+    public float getPositionY() {
+        return positionY ;
+    }
+
+    public void setPositionX(float positionX) {
+        this.positionX = positionX;
+    }
+
+    public void setPositionY(float positionY) {
+        this.positionY = positionY;
+    }
 }

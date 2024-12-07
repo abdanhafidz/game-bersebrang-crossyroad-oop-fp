@@ -1,16 +1,20 @@
 package com.bersebranggame.canvas;
-import java.util.ArrayList;
+
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.bersebranggame.objects.obstacle.Obstacle;
 import com.bersebranggame.objects.obstacle.River;
 import com.bersebranggame.objects.obstacle.Road;
+import jdk.internal.org.jline.terminal.TerminalBuilder;
+
 public class Gameplay{
+
     public static int width = 8;
     public static int height = 10;
     public static FitViewport viewPort = new FitViewport(width,height);
@@ -18,32 +22,51 @@ public class Gameplay{
     public Sprite sprite;
     public Texture texture;
     public static float delta = Gdx.graphics.getDeltaTime();
-    public static ArrayList<Obstacle> obstacles;
-    // public static Obstacle obstaclesArr;
-    public static ArrayList<Obstacle> createObstacles(){
-        ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
-        ArrayList<Obstacle> randomizer = new ArrayList<Obstacle>();
+    public static Array<Obstacle> obstacles;
+    public static Obstacle obsChoosen;
+
+
+    public static Array<Obstacle> createObstacles(){
+        Array<Obstacle> obstacles = new Array<>();
+        Array<Obstacle> randomizer = new Array<>();
         randomizer.add(new River());
         randomizer.add(new Road());
-        // randomizer = [ObjRiver, ObjRoad]
+
+
         Random rand = new Random();
-        int choosenIdx = rand.nextInt(2);
-        Obstacle obsChoosen = randomizer.get(choosenIdx);
-        obsChoosen.sprite.setY(1);
+        int choosenIdx = rand.nextInt(1, 3);
+
+        if (choosenIdx == 1) {
+            obsChoosen = new River();
+        } else if (choosenIdx == 2) {
+            obsChoosen = new Road();
+        }
+
+        obsChoosen.sprite.setY(1);  // Set the initial position
+        obsChoosen.setPositionY(1);
         obstacles.add(obsChoosen);
-       while(obsChoosen.sprite.getY() < height - (obsChoosen.sprite.getHeight() + 2)){
+
+        while (obsChoosen.sprite.getY() < height - (obsChoosen.sprite.getHeight() + 2)) {
             float prevObsPosition = obsChoosen.sprite.getY();
-            choosenIdx = rand.nextInt(1,2);
-            if(choosenIdx == 1){
-                obsChoosen = new River();
-            }else if(choosenIdx == 2){
+
+            choosenIdx = rand.nextInt(1, 3);
+            if (choosenIdx == 1) {
                 obsChoosen = new Road();
+            } else if (choosenIdx == 2) {
+                obsChoosen = new River();
             }
-            int randDist = rand.nextInt(1,3);
+
+            // Set a random Y offset based on the previous obstacle
+            int randDist = rand.nextInt(1, 3);
+
+            // Update the position based on previous Y
             obsChoosen.sprite.setY(prevObsPosition + randDist);
+
+            obsChoosen.setPositionY(obsChoosen.sprite.getY());
             obstacles.add(obsChoosen);
-            
+
         }
         return obstacles;
-    }
+}
+
 }
