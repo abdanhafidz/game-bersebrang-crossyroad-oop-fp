@@ -3,35 +3,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bersebranggame.behaviour.Moveable;
-import com.bersebranggame.behaviour.Spriteable;
 import com.bersebranggame.canvas.Gameplay;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-public class Character extends Gameplay implements Moveable, Spriteable {
-    private int width, height;
-    private float positionX, positionY, speed;
-    private String image;
-    // Default constructor
+public abstract class Character extends Sprite implements Moveable {
+    private float speed;
     public Character() {
-        this.width = 0;
-        this.height = 0;
-        this.positionX = 0;
-        this.positionY = 0;
-        this.speed = 0f;
-        this.image = "";
-        this.texture = null;
+        super(new Texture(""));
+        this.setSize(1,1);
+        this.setPosition(0,0);
+        this.speed = 1f;
+        
     }
 
     // Constructor with all parameters
     public Character(int width, int height, float positionX, float positionY, float speed, String image) {
-        this.width = width;
-        this.height = height;
-        this.positionX = positionX;
-        this.positionY = positionY;
+        super(new Texture(image));
+        this.setSize(width ,height);
+        this.setPosition(positionX, positionY);
         this.speed = speed;
-        this.image = image;
-        this.texture = new Texture(image);
-        this.sprite = new Sprite(texture);
-        this.sprite.setSize(width,height);
     }
 
     // Constructor with optional position (position defaults to 0, 0)
@@ -52,59 +40,28 @@ public class Character extends Gameplay implements Moveable, Spriteable {
         this.speed = speed;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-        if (texture != null) {
-            texture.dispose(); // Dispose previous texture to free memory
-        }
-        this.texture = new Texture(image);
-        this.sprite = new Sprite(texture);
-    }
-
-    @Override
-    public Sprite getSprite() {
-        return sprite;
-    }
-    @Override
-    public void setSprite(Sprite sprite) {
-        this.sprite = sprite;
-    }
-    @Override
-    public Texture getTexture() {
-        return texture;
-    }
-    @Override
-    public void setTexture(Texture texture) {
-        this.texture = texture;
-        this.sprite = new Sprite(texture);
-    }
-
     // Methods for movement
     public void moveRight() {
         Gameplay.delta = Gdx.graphics.getDeltaTime(); 
-        if(this.sprite.getX() < Gameplay.viewPort.getWorldWidth() - 1){
-            this.sprite.translateX(this.speed * Gameplay.delta);
+        if(this.getX() < Gameplay.viewPort.getWorldWidth() - 1){
+            this.translateX(this.speed * Gameplay.delta);
         }
     }
 
     public void moveLeft() {
         Gameplay.delta = Gdx.graphics.getDeltaTime(); 
-        if(this.sprite.getX() >= 0){
-            this.sprite.translateX(-this.speed * Gameplay.delta);
+        if(this.getX() >= 0){
+            this.translateX(-this.speed * Gameplay.delta);
         }
     }
 
     public void moveUp() {
         Gameplay.delta = Gdx.graphics.getDeltaTime(); 
-        if(this.sprite.getY() < Gameplay.viewPort.getWorldHeight() - 1){
-            this.sprite.translateY(this.speed * Gameplay.delta);
+        if(this.getY() < Gameplay.viewPort.getWorldHeight() - 1){
+            this.translateY(this.speed * Gameplay.delta);
         }else{
             Gameplay.obstacles = Gameplay.createObstacles(); 
-            this.sprite.setY(0);
+            this.setY(0);
             // Gameplay.spriteBatch = new SpriteBatch();
             // Gameplay.spriteBatch.stop
             // System.out.println(Gameplay.height);
@@ -113,12 +70,12 @@ public class Character extends Gameplay implements Moveable, Spriteable {
 
     public void moveDown() {
         Gameplay.delta = Gdx.graphics.getDeltaTime(); 
-        if(this.sprite.getY() >= 0 ){
-            this.sprite.translateY(-this.speed * Gameplay.delta);
+        if(this.getY() >= 0 ){
+            this.translateY(-this.speed * Gameplay.delta);
         }
     }
 
-    public void collision() {
+    public void collide() {
         // Collision logic here
     }
 }

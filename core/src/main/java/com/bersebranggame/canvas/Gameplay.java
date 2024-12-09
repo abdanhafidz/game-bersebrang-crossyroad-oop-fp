@@ -18,6 +18,7 @@ public class Gameplay{
     public Sprite sprite;
     public Texture texture;
     public static float delta = Gdx.graphics.getDeltaTime();
+    public static int level = 1;
     public static ArrayList<Obstacle> obstacles;
     // public static Obstacle obstaclesArr;
     public static ArrayList<Obstacle> createObstacles(){
@@ -27,20 +28,20 @@ public class Gameplay{
         randomizer.add(new Road());
         // randomizer = [ObjRiver, ObjRoad]
         Random rand = new Random();
-        int choosenIdx = rand.nextInt(2);
-        Obstacle obsChoosen = randomizer.get(choosenIdx);
-        obsChoosen.sprite.setY(1);
+        int choosenIdx = rand.nextInt(1,3);
+        Obstacle obsChoosen = randomizer.get(choosenIdx - 1);
+        obsChoosen.setY(1);
         obstacles.add(obsChoosen);
-       while(obsChoosen.sprite.getY() < height - (obsChoosen.sprite.getHeight() + 2)){
-            float prevObsPosition = obsChoosen.sprite.getY();
-            choosenIdx = rand.nextInt(1,2);
+       while(obsChoosen.getY() < height - (obsChoosen.getHeight() + 2)){
+            float prevObsPosition = obsChoosen.getY();
+            choosenIdx = rand.nextInt(1,3);
             if(choosenIdx == 1){
                 obsChoosen = new River();
             }else if(choosenIdx == 2){
                 obsChoosen = new Road();
             }
-            int randDist = rand.nextInt(1,3);
-            obsChoosen.sprite.setY(prevObsPosition + randDist);
+            int randDist = rand.nextInt(1,4);
+            obsChoosen.setY(prevObsPosition + randDist);
             obstacles.add(obsChoosen);
             
         }

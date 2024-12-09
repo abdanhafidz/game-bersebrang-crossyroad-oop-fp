@@ -64,7 +64,7 @@ public class Main extends ApplicationAdapter {
     public void resume() {
         super.resume();
         // Reload SpriteBatch and texture if needed
-        if (spriteBatch == null) {
+        if (Gameplay.spriteBatch == null) {
             Gameplay.spriteBatch = new SpriteBatch();
         }
     }
@@ -79,11 +79,12 @@ public class Main extends ApplicationAdapter {
         spriteBatch.draw(backgroundTexture,0,0, worldWidth, worldHeight);
         for(Obstacle r_Obstacle : Gameplay.obstacles){
             // if(i == 1){
-            //     System.out.println("Create Obstacle : " + r_Obstacle.getImage() + ", Position :" + r_Obstacle.sprite.getY());
+            //     System.out.println("Create Obstacle : " + r_Obstacle.getImage() + ", Position :" + r_Obstacle.getY());
             // }
-            r_Obstacle.sprite.draw(spriteBatch);
+            r_Obstacle.draw(spriteBatch);
         }
-        chickenPlayer.sprite.draw(spriteBatch);
+        System.out.println(chickenPlayer.getWidth());
+        chickenPlayer.draw(spriteBatch);
         spriteBatch.end();
     }
     @Override
