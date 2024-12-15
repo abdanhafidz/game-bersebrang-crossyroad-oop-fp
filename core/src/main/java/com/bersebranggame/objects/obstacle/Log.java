@@ -42,7 +42,7 @@ public class Log extends Obstacle {
             }
             sprite.translateX(-speed * delta);
 
-            // If car goes beyond left boundary, reset to right
+
             if (sprite.getX() < -sprite.getWidth()) {
                 sprite.setX(Gameplay.viewPort.getWorldWidth());
             }

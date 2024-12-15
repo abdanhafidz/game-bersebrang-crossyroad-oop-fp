@@ -1,41 +1,27 @@
 package com.bersebranggame.manager;
 
 
+import com.badlogic.gdx.utils.Array;
 import com.bersebranggame.objects.enviroment.River;
 import com.bersebranggame.objects.enviroment.Road;
 import com.bersebranggame.objects.obstacle.Log;
+import com.bersebranggame.objects.obstacle.Obstacle;
 import com.bersebranggame.objects.vehicle.Car;
+import com.bersebranggame.objects.vehicle.Vehicle;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static com.badlogic.gdx.math.MathUtils.random;
+
 public class SpawnManager {
-    private  List<Car> cars;
-    private  List<Log> logs;
-    private  Random random;
 
-    public SpawnManager() {
-        this.cars = new ArrayList<>();
-        this.logs = new ArrayList<>();
-        this.random = new Random();
-    }
-
-    public void spawnEntities(List<Object> obstacles) {
-        for (Object obstacle : obstacles) {
-            if (obstacle instanceof Road) {
-                spawnCar((Road) obstacle);
-            } else if (obstacle instanceof River) {
-                spawnLog((River) obstacle);
-            }
-        }
-    }
-
-    private void spawnCar(Road road) {
+    public Vehicle spawnCar(Road road) {
         boolean randomDirection = random.nextBoolean();
         float randomSpeed = generateRandomSpeed(1.0f, 3.0f);
 
-        Car car = new Car(
+        return new Car(
             randomDirection ? "car.png" : "car2.png",
             randomDirection ? Gameplay.width : 0,
             road.getPositionY(),
@@ -44,13 +30,12 @@ public class SpawnManager {
             randomSpeed,
             randomDirection
         );
-        cars.add(car);
     }
 
-    private void spawnLog(River river) {
+    public Log spawnLog(River river) {
         float randomSpeed = generateRandomSpeed(1.5f, 2.5f);
 
-        Log log = new Log(
+        return new Log(
             "log.png",
             random.nextFloat() * Gameplay.width,
             river.getPositionY(),
@@ -59,18 +44,53 @@ public class SpawnManager {
             randomSpeed,
             false
         );
-        logs.add(log);
     }
+
+
 
     private float generateRandomSpeed(float min, float max) {
         return min + random.nextFloat() * (max - min);
     }
 
-    public List<Car> getCars() {
-        return cars;
+
+    public Array<Obstacle> createObstacles() {
+        Array<Obstacle> obstacles = new Array<>();
+        Random rand = new Random();
+
+        // Initialize the first obstacle
+        Obstacle currentObstacle = createRandomObstacle();
+        currentObstacle.sprite.setY(1);  // Set the initial Y position
+        currentObstacle.setPositionY(1);
+        obstacles.add(currentObstacle);
+
+        // Continue creating obstacles until the end of the screen
+        while (currentObstacle.sprite.getY() < Gameplay.height - (currentObstacle.sprite.getHeight() + 2)) {
+            float prevPositionY = currentObstacle.sprite.getY();
+
+            // Choose a random next obstacle
+            currentObstacle = createRandomObstacle();
+
+            // Randomly offset the Y position
+            int randDist = rand.nextInt(2) + 1;  // Random distance between 1 and 2
+            currentObstacle.sprite.setY(prevPositionY + randDist);
+
+            // Update position and add to the list
+            currentObstacle.setPositionY(currentObstacle.sprite.getY());
+            obstacles.add(currentObstacle);
+        }
+
+        return obstacles;
     }
 
-    public List<Log> getLogs() {
-        return logs;
+    private Obstacle createRandomObstacle() {
+        Random rand = new Random();
+        int randomIdx = rand.nextInt(2);  // Generate 0 or 1
+
+        if (randomIdx == 0) {
+            return new River();  // Return a River object
+        } else {
+            return new Road();   // Return a Road object
+        }
     }
+
 }

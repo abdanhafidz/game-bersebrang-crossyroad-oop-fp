@@ -79,4 +79,7 @@ public class Obstacle extends Gameplay   {
     public void setPositionY(float positionY) {
         this.positionY = positionY;
     }
+
+    public void update() {
+    }
 }

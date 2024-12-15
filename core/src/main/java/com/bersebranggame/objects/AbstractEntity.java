@@ -23,8 +23,6 @@ public abstract class AbstractEntity {
     }
 
 
-
-
     public abstract void update();
 
     public abstract boolean checkCollision(Sprite otherSprite);
