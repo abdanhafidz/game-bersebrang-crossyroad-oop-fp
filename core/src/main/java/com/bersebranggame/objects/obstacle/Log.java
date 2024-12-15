@@ -3,7 +3,7 @@ package com.bersebranggame.objects.obstacle;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.bersebranggame.canvas.Gameplay;
+import com.bersebranggame.manager.Gameplay;
 
 public class Log extends Obstacle {
     private Sprite sprite;

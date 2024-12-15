@@ -1,9 +1,9 @@
 package com.bersebranggame.objects.obstacle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.bersebranggame.canvas.Gameplay;
-import com.bersebranggame.behaviour.Spriteable;
-public class Obstacle extends Gameplay implements Spriteable  {
+import com.bersebranggame.manager.Gameplay;
+
+public class Obstacle extends Gameplay   {
     private int width, height;
     private float positionX, positionY, speed;
     private String image;

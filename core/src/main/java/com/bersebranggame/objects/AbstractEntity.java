@@ -23,6 +23,8 @@ public abstract class AbstractEntity {
     }
 
 
+
+
     public abstract void update();
 
     public abstract boolean checkCollision(Sprite otherSprite);
@@ -32,6 +34,7 @@ public abstract class AbstractEntity {
     public Sprite getSprite() {
         return sprite;
     }
+
 
     // Getter and Setter methods
     public float getX() {

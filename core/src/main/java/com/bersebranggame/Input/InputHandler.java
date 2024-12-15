@@ -2,7 +2,7 @@ package com.bersebranggame.Input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.bersebranggame.canvas.Gameplay;
+import com.bersebranggame.manager.Gameplay;
 import com.bersebranggame.objects.character.Character;
 
 public class InputHandler {

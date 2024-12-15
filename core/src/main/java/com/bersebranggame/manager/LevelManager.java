@@ -1,4 +1,4 @@
-package com.bersebranggame.canvas;
+package com.bersebranggame.manager;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;

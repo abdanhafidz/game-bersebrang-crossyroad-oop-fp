@@ -2,47 +2,23 @@ package com.bersebranggame.objects.vehicle;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.Gdx;
+import com.bersebranggame.behaviour.Collidable;
 import com.bersebranggame.behaviour.Moveable;
-import com.bersebranggame.canvas.Gameplay;
+import com.bersebranggame.manager.Gameplay;
 
-import static com.bersebranggame.canvas.Gameplay.delta;
-
-public class Car extends Vehicle implements Moveable {
+public class Car extends Vehicle implements Moveable, Collidable {
     public Car(String imagePath, float x, float y, float width, float height, float speed, boolean movingRight) {
         super(imagePath, x, y, width, height, speed, movingRight);
     }
 
     @Override
     public void update() {
-        float delta = Gdx.graphics.getDeltaTime();
+
         if (movingRight) {
-            // Ensure sprite is facing right
-            if (sprite.isFlipX()) {
-                sprite.flip(true, false);
-            }
-            sprite.translateX(speed * delta);
-
-            // If car goes beyond right boundary, reset to left
-            if (sprite.getX() > Gameplay.viewPort.getWorldWidth()) {
-                sprite.setX(-sprite.getWidth());
-            }
+            moveRight();
         } else {
-            // Ensure sprite is facing left
-            if (!sprite.isFlipX()) {
-                sprite.flip(true, false);
-            }
-            sprite.translateX(-speed * delta);
-
-            // If car goes beyond left boundary, reset to right
-            if (sprite.getX() < -sprite.getWidth()) {
-                sprite.setX(Gameplay.viewPort.getWorldWidth());
-            }
+            moveLeft();
         }
-    }
-
-    @Override
-    public boolean checkCollision(Sprite otherSprite) {
-        return sprite.getBoundingRectangle().overlaps(otherSprite.getBoundingRectangle());
     }
 
     @Override
@@ -54,10 +30,11 @@ public class Car extends Vehicle implements Moveable {
 
     @Override
     public void moveRight() {
+        float delta_ = Gdx.graphics.getDeltaTime();
         if (sprite.isFlipX()) {
             sprite.flip(true, false);
         }
-        sprite.translateX(speed * delta);
+        sprite.translateX(speed * delta_);
 
         // If car goes beyond right boundary, reset to left
         if (sprite.getX() > Gameplay.viewPort.getWorldWidth()) {
@@ -68,7 +45,20 @@ public class Car extends Vehicle implements Moveable {
     @Override
     public void moveLeft() {
 
+
+        float delta_ = Gdx.graphics.getDeltaTime();
+        if (!sprite.isFlipX()) {
+            sprite.flip(true, false);
+        }
+        sprite.translateX(-speed * delta_);
+
+        // If car goes beyond left boundary, reset to right
+        if (sprite.getX() < -sprite.getWidth()) {
+            sprite.setX(Gameplay.viewPort.getWorldWidth());
+        }
+
     }
+
 
     @Override
     public void moveUp() {
@@ -78,5 +68,10 @@ public class Car extends Vehicle implements Moveable {
     @Override
     public void moveDown() {
 
+    }
+
+    @Override
+    public boolean checkCollision(Sprite otherSprite) {
+        return sprite.getBoundingRectangle().overlaps(otherSprite.getBoundingRectangle());
     }
 }

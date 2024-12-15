@@ -2,12 +2,10 @@ package com.bersebranggame.objects.character;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.bersebranggame.Main;
 import com.bersebranggame.behaviour.Moveable;
-import com.bersebranggame.behaviour.Spriteable;
-import com.bersebranggame.canvas.Gameplay;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-public class Character extends Gameplay implements Moveable, Spriteable {
+import com.bersebranggame.manager.Gameplay;
+
+public class Character extends Gameplay implements Moveable {
     private float width, height;
     private float positionX, positionY, speed;
     private String image;
@@ -35,33 +33,12 @@ public class Character extends Gameplay implements Moveable, Spriteable {
         this(50, 50, 0, 0, speed, image); // Default width = 50, height = 50
     }
 
-    public float getSpeed() {
-        return speed;
-    }
 
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-        if (texture != null) {
-            texture.dispose(); // Dispose previous texture to free memory
-        }
-        this.texture = new Texture(image);
-        this.sprite = new Sprite(texture);
-    }
-
-    @Override
     public Sprite getSprite() {
         return sprite;
     }
 
-    // Methods for movement
     public void moveRight() {
         Gameplay.delta = Gdx.graphics.getDeltaTime();
         if(this.sprite.getX() < Gameplay.viewPort.getWorldWidth() - 1){

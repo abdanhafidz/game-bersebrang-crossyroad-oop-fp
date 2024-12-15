@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.bersebranggame.canvas.Gameplay;
-import com.bersebranggame.canvas.LevelManager;
+import com.bersebranggame.manager.Gameplay;
+import com.bersebranggame.manager.LevelManager;
 import com.bersebranggame.objects.character.Chicken;
 import com.bersebranggame.objects.obstacle.Log;
 import com.bersebranggame.objects.obstacle.Obstacle;
@@ -57,10 +57,10 @@ public class Main extends ApplicationAdapter {
 
     private void logic() {
 
-
         if (spriteBatch == null) {
             Gameplay.spriteBatch = new SpriteBatch();
         }
+
         spriteBatch = Gameplay.spriteBatch;
         levelManager.updateCars();
         levelManager.updateLog();
@@ -82,7 +82,7 @@ public class Main extends ApplicationAdapter {
         for (Log log : levelManager.getLogs()) {
 
             if (Intersector.overlaps(chickenPlayer.getSprite().getBoundingRectangle(), log.getSprite().getBoundingRectangle())) {
-//                onLog = true;
+
                 onLog = true;
 
                 if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
@@ -128,7 +128,7 @@ public class Main extends ApplicationAdapter {
 
     private void draw() {
         ScreenUtils.clear(Color.BROWN);
-        Gameplay.viewPort.apply();
+//       Gameplay.viewPort.apply();
         spriteBatch.setProjectionMatrix(Gameplay.viewPort.getCamera().combined);
         spriteBatch.begin();
         float worldWidth = Gameplay.viewPort.getWorldWidth();

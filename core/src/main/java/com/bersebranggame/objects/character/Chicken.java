@@ -5,4 +5,5 @@ public class Chicken extends Character{
         super(1f, 0.8f, 4f, "chicken.png");
     }
 
+
 }

@@ -1,5 +1,5 @@
 package com.bersebranggame.objects.enviroment;
-import com.bersebranggame.canvas.Gameplay;
+import com.bersebranggame.manager.Gameplay;
 import com.bersebranggame.objects.obstacle.Obstacle;
 
 public class Road extends Obstacle {

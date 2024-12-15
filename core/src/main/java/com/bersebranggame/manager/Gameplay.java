@@ -1,4 +1,4 @@
-package com.bersebranggame.canvas;
+package com.bersebranggame.manager;
 
 import java.util.Random;
 
