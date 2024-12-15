@@ -1,6 +1,8 @@
-package com.bersebranggame.objects.obstacle;
+package com.bersebranggame.objects.enviroment;
 import com.bersebranggame.canvas.Gameplay;
-public class River extends Obstacle  {
+import com.bersebranggame.objects.obstacle.Obstacle;
+
+public class River extends Obstacle {
     public River(){
         super(
             Gameplay.width,

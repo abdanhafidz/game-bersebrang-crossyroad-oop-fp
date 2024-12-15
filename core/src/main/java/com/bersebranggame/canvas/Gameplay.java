@@ -9,9 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.bersebranggame.objects.obstacle.Obstacle;
-import com.bersebranggame.objects.obstacle.River;
-import com.bersebranggame.objects.obstacle.Road;
-import jdk.internal.org.jline.terminal.TerminalBuilder;
+import com.bersebranggame.objects.enviroment.River;
+import com.bersebranggame.objects.enviroment.Road;
 
 public class Gameplay{
 

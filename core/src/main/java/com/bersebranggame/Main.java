@@ -1,7 +1,6 @@
 package com.bersebranggame;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -12,13 +11,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.bersebranggame.canvas.Gameplay;
 import com.bersebranggame.canvas.LevelManager;
 import com.bersebranggame.objects.character.Chicken;
-import com.bersebranggame.objects.obstacle.Car;
 import com.bersebranggame.objects.obstacle.Log;
 import com.bersebranggame.objects.obstacle.Obstacle;
-import com.bersebranggame.objects.obstacle.River;
-
-import java.util.TreeMap;
-
+import com.bersebranggame.objects.enviroment.River;
+import com.bersebranggame.Input.InputHandler;
+import com.bersebranggame.objects.vehicle.Car;
 
 public class Main extends ApplicationAdapter {
     Texture backgroundTexture;
@@ -28,6 +25,7 @@ public class Main extends ApplicationAdapter {
     private boolean inRiver = true;
     private boolean gameOver = false;
     private boolean onLog = false;
+    private InputHandler inputHandler;
 
 
     @Override
@@ -38,6 +36,8 @@ public class Main extends ApplicationAdapter {
 
         chickenPlayer = new Chicken();
         levelManager = new LevelManager(Gameplay.obstacles, 0, 1);
+
+        inputHandler = new InputHandler(chickenPlayer);
     }
 
     @Override
@@ -48,28 +48,12 @@ public class Main extends ApplicationAdapter {
     @Override
     public void render() {
         if (!gameOver) {
-            input();
+            inputHandler.handelInput();
             logic();
         }
         draw();
     }
 
-    private void input() {
-        Gameplay.delta = 15;
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            chickenPlayer.moveLeft();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            chickenPlayer.moveRight();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            chickenPlayer.moveUp();
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            chickenPlayer.moveDown();
-        }
-    }
 
     private void logic() {
 
@@ -98,7 +82,25 @@ public class Main extends ApplicationAdapter {
         for (Log log : levelManager.getLogs()) {
 
             if (Intersector.overlaps(chickenPlayer.getSprite().getBoundingRectangle(), log.getSprite().getBoundingRectangle())) {
+//                onLog = true;
                 onLog = true;
+
+                if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                    chickenPlayer.moveUp();
+                }
+                else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                    chickenPlayer.moveDown();
+                }
+                else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                    chickenPlayer.moveLeft();
+                }
+                else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                    chickenPlayer.moveRight();
+                }
+                else {
+                    chickenPlayer.sprite.setX(log.getSprite().getX());
+                    chickenPlayer.sprite.setY(log.getSprite().getY());
+                }
                 break;
             }
         }
@@ -138,6 +140,7 @@ public class Main extends ApplicationAdapter {
         }
 
         for (Car car : levelManager.getCars()) {
+            System.out.println("gambar mobil");
             car.getSprite().draw(spriteBatch);
         }
 

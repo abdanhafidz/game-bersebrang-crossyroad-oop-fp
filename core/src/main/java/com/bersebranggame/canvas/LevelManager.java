@@ -2,7 +2,10 @@ package com.bersebranggame.canvas;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
+import com.bersebranggame.objects.enviroment.River;
+import com.bersebranggame.objects.enviroment.Road;
 import com.bersebranggame.objects.obstacle.*;
+import com.bersebranggame.objects.vehicle.Car;
 
 import java.util.Random;
 
@@ -49,7 +52,8 @@ public class LevelManager {
             }else {
                 cars.add(new Car("car2.png", obstacle.getPositionX(), obstacle.getPositionY(),
                     1.0f, 0.5f, randomFloat, false));
-            }}
+            }
+            }
             else if (obstacle instanceof River){
                 logs.add(new Log("log.png", obstacle.getPositionX(), obstacle.getPositionY(),
                     2f, 1f, randomFloat, false));

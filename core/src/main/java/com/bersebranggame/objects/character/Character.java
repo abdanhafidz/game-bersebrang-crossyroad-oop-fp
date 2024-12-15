@@ -12,17 +12,6 @@ public class Character extends Gameplay implements Moveable, Spriteable {
     private float positionX, positionY, speed;
     private String image;
 
-    // Default constructor
-    public Character() {
-        this.width = 0;
-        this.height = 0;
-        this.positionX = 0;
-        this.positionY = 0;
-        this.speed = 0f;
-        this.image = "";
-        this.texture = null;
-    }
-
     // Constructor with all parameters
     public Character(float width, float height, float positionX, float positionY, float speed, String image) {
         this.width = width;
@@ -71,19 +60,6 @@ public class Character extends Gameplay implements Moveable, Spriteable {
     public Sprite getSprite() {
         return sprite;
     }
-    @Override
-    public void setSprite(Sprite sprite) {
-        this.sprite = sprite;
-    }
-    @Override
-    public Texture getTexture() {
-        return texture;
-    }
-    @Override
-    public void setTexture(Texture texture) {
-        this.texture = texture;
-        this.sprite = new Sprite(texture);
-    }
 
     // Methods for movement
     public void moveRight() {
@@ -114,7 +90,4 @@ public class Character extends Gameplay implements Moveable, Spriteable {
         }
     }
 
-    public void collision() {
-        // Collision logic here
-    }
 }
