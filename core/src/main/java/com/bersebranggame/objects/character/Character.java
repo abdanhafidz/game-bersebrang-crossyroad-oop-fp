@@ -1,9 +1,7 @@
 package com.bersebranggame.objects.character;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.bersebranggame.behaviour.Moveable;
 import com.bersebranggame.manager.Gameplay;
 import com.bersebranggame.Entity;
@@ -15,11 +13,6 @@ public class Character extends Entity implements Moveable {
     private float prevX;
     private float prevY;
     private String image;
-    private Animation<TextureRegion> walkUp;
-    private Animation<TextureRegion> walkDown;
-    private Animation<TextureRegion> walkLeft;
-    private Animation<TextureRegion> walkRight;
-    private float stateTime;
 
     // Constructor with all parameters
     public Character(float width, float height, float positionX, float positionY, float speed, String image) {
@@ -36,14 +29,6 @@ public class Character extends Entity implements Moveable {
         this(width, height, 0, 0, speed, image);
     }
 
-    @Override
-    public void update() {
-    }
-
-
-    @Override
-    public void dispose() {
-    }
 
     public void moveRight() {
         Gameplay.delta = Gdx.graphics.getDeltaTime();
@@ -77,6 +62,11 @@ public class Character extends Entity implements Moveable {
         }
     }
 
+    @Override
+    public Sprite getSprite() {
+        return super.getSprite();
+    }
+
     public float getPrevX() {
         return prevX;
     }
@@ -87,7 +77,11 @@ public class Character extends Entity implements Moveable {
     }
 
     @Override
-    public Sprite getSprite() {
-        return super.getSprite();
+    public void update() {
     }
+
+    @Override
+    public void dispose() {
+    }
+
 }
