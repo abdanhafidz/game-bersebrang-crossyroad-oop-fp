@@ -14,6 +14,11 @@ import static com.badlogic.gdx.math.MathUtils.random;
 
 public class SpawnManager {
 
+
+    private float generateRandomSpeed(float min, float max) {
+        return min + random.nextFloat() * (max - min);
+    }
+
     public Vehicle spawnCar(Road road) {
         boolean randomDirection = random.nextBoolean();
         float randomSpeed = generateRandomSpeed(1.0f, 3.0f);
@@ -22,8 +27,8 @@ public class SpawnManager {
             randomDirection ? "car.png" : "car2.png",
             randomDirection ? Gameplay.width : 0,
             road.getPositionY(),
-            1.0f,
-            0.5f,
+            0.9f,
+            0.9f,
             randomSpeed,
             randomDirection
         );
@@ -37,18 +42,11 @@ public class SpawnManager {
             random.nextFloat() * Gameplay.width,
             river.getPositionY(),
             3.0f,
-            1.0f,
+            1.f,
             randomSpeed,
             randomDirection
         );
     }
-
-
-
-    private float generateRandomSpeed(float min, float max) {
-        return min + random.nextFloat() * (max - min);
-    }
-
 
     public Array<Obstacle> createObstacles() {
         Array<Obstacle> obstacles = new Array<>();

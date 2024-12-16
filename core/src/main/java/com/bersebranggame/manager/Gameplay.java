@@ -10,5 +10,7 @@ public class Gameplay{
     public static FitViewport viewPort = new FitViewport(width,height);
     public static SpriteBatch spriteBatch = new SpriteBatch();
     public static float delta = Gdx.graphics.getDeltaTime();
+    public static float lastPositionY = 0;
+    public static boolean gameOver = false;
 
 }

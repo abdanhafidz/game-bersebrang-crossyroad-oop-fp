@@ -1,14 +1,11 @@
 package com.bersebranggame;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.bersebranggame.manager.GamePlayManager;
 import com.bersebranggame.manager.Gameplay;
 import com.bersebranggame.manager.ScoreManager;
@@ -19,26 +16,22 @@ import com.bersebranggame.objects.enviroment.River;
 import com.bersebranggame.Input.InputHandler;
 import com.bersebranggame.objects.obstacle.Rock;
 import com.bersebranggame.objects.vehicle.Vehicle;
+import com.bersebranggame.screen.StartScreen;
 
 public class Main extends ApplicationAdapter {
     private enum GameState {
         START, GAMEPLAY
     }
-
-
-
     private GameState currentState; // State game
     private Texture backgroundTexture;
     private Texture startScreenBackground; // Latar belakang untuk layar awal
     private Chicken chickenPlayer;
     private SpriteBatch spriteBatch;
-    private boolean gameOver = false;
     private boolean onLog = false;
     private InputHandler inputHandler;
     private GamePlayManager gamePlayManager;
     private ScoreManager scoreManager;
     private BitmapFont font;
-    private float lastPositionY;
     private StartScreen startScreen;
     private GameRenderer gameRenderer; // New game renderer
 
@@ -60,12 +53,8 @@ public class Main extends ApplicationAdapter {
         gamePlayManager = new GamePlayManager();
         scoreManager = new ScoreManager(font);
 
-        // Initialize chicken player and input handler
         chickenPlayer = new Chicken();
         inputHandler = new InputHandler(chickenPlayer);
-
-        // Set initial score
-        lastPositionY = 0;
 
         gameRenderer = new GameRenderer(spriteBatch, backgroundTexture,
             scoreManager, gamePlayManager, chickenPlayer);
@@ -84,7 +73,7 @@ public class Main extends ApplicationAdapter {
                 break;
 
             case GAMEPLAY:
-                if (!gameOver) {
+                if (!Gameplay.gameOver) {
                     inputHandler.handelInput();
                     logic();
                 }
@@ -94,14 +83,14 @@ public class Main extends ApplicationAdapter {
     }
 
     private void logic() {
-        spriteBatch = Gameplay.spriteBatch;
         gamePlayManager.updateCars();
         gamePlayManager.updateLog();
+
 
         // Collision detection with cars
         for (Vehicle car : gamePlayManager.getCars()) {
             if (car.checkCollision(chickenPlayer.getSprite())) {
-                gameOver = true;
+                Gameplay.gameOver = true;
             }
         }
 
@@ -111,7 +100,8 @@ public class Main extends ApplicationAdapter {
             gamePlayManager.dispose();
             gamePlayManager.setNewObs();
             gamePlayManager.spawnEntities();
-            lastPositionY = 0;
+
+            Gameplay.lastPositionY = 0;
         }
 
         boolean onLog = false;
@@ -134,13 +124,12 @@ public class Main extends ApplicationAdapter {
                         float logMovementX = log.getSpeed() * delta_; // Assuming the log has a movement speed
                         chickenPlayer.getSprite().translateX(logMovementX);
                     } else {
-                        // If a key is pressed, handle input normally
                         inputHandler.handelInput();
                     }
 
                     if (chickenPlayer.getSprite().getX() >= Gameplay.viewPort.getWorldWidth() ||
                         chickenPlayer.getSprite().getX() < 0) {
-                        gameOver = true;
+                        Gameplay.gameOver = true;
                     }
                 }
             }
@@ -150,7 +139,7 @@ public class Main extends ApplicationAdapter {
             for (Obstacle obs : gamePlayManager.getObs()) {
                 if (obs instanceof River && chickenPlayer.getSprite().getBoundingRectangle().overlaps(obs.getSprite().getBoundingRectangle())) {
                     System.out.println("Masuk sungai");
-                    gameOver = true;
+                    Gameplay.gameOver = true;
                 }
 
                 if (obs instanceof Rock && chickenPlayer.getSprite().getBoundingRectangle().overlaps(obs.getSprite().getBoundingRectangle())) {
@@ -161,9 +150,9 @@ public class Main extends ApplicationAdapter {
         }
 
         // Update score if chicken moves higher
-        if ((int) chickenPlayer.getSprite().getY() > lastPositionY) {
+        if ((int) chickenPlayer.getSprite().getY() > Gameplay.lastPositionY) {
             scoreManager.incrementScore();
-            lastPositionY = (int) chickenPlayer.getSprite().getY();
+            Gameplay.lastPositionY = (int) chickenPlayer.getSprite().getY();
         }
     }
 

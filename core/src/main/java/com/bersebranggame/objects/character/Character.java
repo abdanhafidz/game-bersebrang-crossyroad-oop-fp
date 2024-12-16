@@ -82,4 +82,9 @@ public class Character extends AbstractEntity implements Moveable {
     public float getPrevY() {
         return prevY;
     }
+
+    @Override
+    public Sprite getSprite() {
+        return super.getSprite();
+    }
 }
