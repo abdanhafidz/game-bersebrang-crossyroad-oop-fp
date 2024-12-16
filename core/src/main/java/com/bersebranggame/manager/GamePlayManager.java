@@ -59,7 +59,7 @@ public class GamePlayManager {
 
     private void disposePreviousLevel() {
 
-        // Dispose of previous cars
+        // Dispose cars log dan juga array nya sebelumnya jika ganti level le
         for (Vehicle car : cars) {
             car.dispose();
         }
@@ -69,8 +69,6 @@ public class GamePlayManager {
         }
 
         logs.clear();
-
-
         cars.clear();
     }
 
