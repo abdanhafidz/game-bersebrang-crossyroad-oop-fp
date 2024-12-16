@@ -25,6 +25,8 @@ public class Main extends ApplicationAdapter {
         START, GAMEPLAY
     }
 
+
+
     private GameState currentState; // State game
     private Texture backgroundTexture;
     private Texture startScreenBackground; // Latar belakang untuk layar awal
@@ -44,6 +46,7 @@ public class Main extends ApplicationAdapter {
     public void create() {
 
         startScreen = new StartScreen();
+        currentState = GameState.START;
 
 
         spriteBatch = Gameplay.spriteBatch;
@@ -85,7 +88,7 @@ public class Main extends ApplicationAdapter {
                     inputHandler.handelInput();
                     logic();
                 }
-                draw();
+                gameRenderer.render();
                 break;
         }
     }
@@ -162,33 +165,6 @@ public class Main extends ApplicationAdapter {
             scoreManager.incrementScore();
             lastPositionY = (int) chickenPlayer.getSprite().getY();
         }
-    }
-
-    private void draw() {
-        ScreenUtils.clear(Color.BROWN);
-
-        Gameplay.viewPort.apply();
-        spriteBatch.setProjectionMatrix(Gameplay.viewPort.getCamera().combined);
-
-        spriteBatch.begin();
-        float worldWidth = Gameplay.viewPort.getWorldWidth();
-        float worldHeight = Gameplay.viewPort.getWorldHeight();
-
-        spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
-
-        for (Obstacle obs : gamePlayManager.getObs()) {
-            obs.getSprite().draw(spriteBatch);
-        }
-        for (Vehicle car : gamePlayManager.getCars()) {
-            car.getSprite().draw(spriteBatch);
-        }
-        for (Log log : gamePlayManager.getLogs()) {
-            log.getSprite().draw(spriteBatch);
-        }
-        chickenPlayer.getSprite().draw(spriteBatch);
-
-        scoreManager.drawScore(0.45f, 9.8f);
-        spriteBatch.end();
     }
 
     @Override
