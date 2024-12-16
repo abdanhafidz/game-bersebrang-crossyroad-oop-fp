@@ -7,29 +7,26 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.bersebranggame.manager.GamePlayManager;
 import com.bersebranggame.manager.Gameplay;
 import com.bersebranggame.manager.ScoreManager;
-import com.bersebranggame.objects.character.Character;
 import com.bersebranggame.objects.character.Chicken;
 import com.bersebranggame.objects.obstacle.Log;
 import com.bersebranggame.objects.obstacle.Obstacle;
 import com.bersebranggame.objects.vehicle.Vehicle;
 
 public class GameRenderer {
-
     private SpriteBatch spriteBatch;
     private Texture backgroundTexture;
     private ScoreManager scoreManager;
     private GamePlayManager gamePlayManager;
-    private Character character;
+    private Chicken chickenPlayer;
 
     public GameRenderer(SpriteBatch spriteBatch, Texture backgroundTexture,
                         ScoreManager scoreManager, GamePlayManager gamePlayManager,
-                        Character character) {
-
+                        Chicken chickenPlayer) {
         this.spriteBatch = spriteBatch;
         this.backgroundTexture = backgroundTexture;
         this.scoreManager = scoreManager;
         this.gamePlayManager = gamePlayManager;
-        this.character= character;
+        this.chickenPlayer = chickenPlayer;
     }
 
     public void render() {
@@ -66,7 +63,7 @@ public class GameRenderer {
         }
 
         // Draw chicken player
-        character.getSprite().draw(spriteBatch);
+        chickenPlayer.getSprite().draw(spriteBatch);
 
         // Draw score
         scoreManager.drawScore(0.45f, 9.8f);
@@ -75,6 +72,7 @@ public class GameRenderer {
         spriteBatch.end();
     }
 
+    // Optional: Dispose method to clean up resources
     public void dispose() {
         // Note: Do not dispose of textures or sprite batch here if they are
         // managed by the main game class

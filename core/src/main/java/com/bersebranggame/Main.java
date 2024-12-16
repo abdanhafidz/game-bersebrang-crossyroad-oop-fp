@@ -38,15 +38,16 @@ public class Main extends ApplicationAdapter {
     private BitmapFont font;
     private float lastPositionY;
     private StartScreen startScreen;
+    private GameRenderer gameRenderer; // New game renderer
 
     @Override
     public void create() {
 
         startScreen = new StartScreen();
-        currentState = GameState.START;
 
-        // Load resources
-        spriteBatch = new SpriteBatch();
+
+        spriteBatch = Gameplay.spriteBatch;
+
         startScreenBackground = new Texture("start_screen_background.png");
         backgroundTexture = new Texture("background.jpg");
 
@@ -62,6 +63,10 @@ public class Main extends ApplicationAdapter {
 
         // Set initial score
         lastPositionY = 0;
+
+        gameRenderer = new GameRenderer(spriteBatch, backgroundTexture,
+            scoreManager, gamePlayManager, chickenPlayer);
+
     }
 
     @Override
