@@ -1,4 +1,8 @@
 package com.bersebranggame.behaviour;
 
 
-public interface Collidable {};
+import com.badlogic.gdx.graphics.g2d.Sprite;
+
+public interface Collidable {
+    Boolean checkCollision(Sprite otherSprite);
+};

@@ -1,10 +1,9 @@
 package com.bersebranggame.objects.obstacle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.bersebranggame.manager.Gameplay;
-import com.bersebranggame.objects.AbstractEntity;
+import com.bersebranggame.Entity;
 
-public abstract class  Obstacle extends AbstractEntity {
+public abstract class  Obstacle extends Entity {
     private Sprite sprite;
     private Texture texture;
     private int width, height;
@@ -51,11 +50,7 @@ public abstract class  Obstacle extends AbstractEntity {
     }
 
     @Override
-    public boolean checkCollision(Sprite otherSprite) {
-        return false;
-    }
-
-    @Override
     public void dispose() {
+        texture.dispose();
     }
 }

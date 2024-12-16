@@ -1,13 +1,12 @@
-package com.bersebranggame.objects;
-
+package com.bersebranggame;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public abstract class AbstractEntity {
+public abstract class Entity {
     protected Sprite sprite;
     protected float x, y;
     protected float width, height;
 
-    public AbstractEntity(float x, float y, float width, float height) {
+    public Entity(float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -20,12 +19,6 @@ public abstract class AbstractEntity {
         this.sprite.setPosition(x, y);
         this.sprite.setSize(width, height);
     }
-
-    public abstract void update();
-
-    public abstract boolean checkCollision(Sprite otherSprite);
-
-    public abstract void dispose();
 
     public Sprite getSprite() {
         return sprite;
@@ -68,4 +61,7 @@ public abstract class AbstractEntity {
         this.height = height;
         this.sprite.setSize(width, height);
     }
+
+    public abstract void update();
+    public abstract void dispose();
 }

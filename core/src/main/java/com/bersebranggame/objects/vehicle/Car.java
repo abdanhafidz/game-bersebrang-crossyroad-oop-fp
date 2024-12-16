@@ -6,7 +6,7 @@ import com.bersebranggame.behaviour.Collidable;
 import com.bersebranggame.behaviour.Moveable;
 import com.bersebranggame.manager.Gameplay;
 
-public class Car extends Vehicle implements Moveable, Collidable {
+public class Car extends Vehicle implements Moveable{
     public Car(String imagePath, float x, float y, float width, float height, float speed, boolean movingRight) {
         super(imagePath, x, y, width, height, speed, movingRight);
     }
@@ -57,19 +57,13 @@ public class Car extends Vehicle implements Moveable, Collidable {
         }
     }
 
-
     @Override
-    public void moveUp() {
-
-    }
-
-    @Override
-    public void moveDown() {
-
-    }
-
-    @Override
-    public boolean checkCollision(Sprite otherSprite) {
+    public Boolean checkCollision(Sprite otherSprite) {
         return sprite.getBoundingRectangle().overlaps(otherSprite.getBoundingRectangle());
     }
+
+    @Override
+    public void moveUp() {}
+    @Override
+    public void moveDown() {}
 }

@@ -1,5 +1,4 @@
 package com.bersebranggame;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Intersector;
@@ -10,7 +9,9 @@ import com.bersebranggame.manager.ScoreManager;
 import com.bersebranggame.objects.character.Character;
 import com.bersebranggame.objects.obstacle.Log;
 import com.bersebranggame.objects.obstacle.Obstacle;
+import com.bersebranggame.objects.obstacle.River;
 import com.bersebranggame.objects.obstacle.Rock;
+import com.bersebranggame.objects.point.Coin;
 import com.bersebranggame.objects.vehicle.Vehicle;
 
 public class GameLogic {
@@ -30,11 +31,21 @@ public class GameLogic {
     public void logic() {
         gamePlayManager.updateCars();
         gamePlayManager.updateLog();
+        gamePlayManager.updateCoin();
 
-        // Collision detection with cars
+        // Collision detection untuk Vehcile dengan Player
         for (Vehicle car : gamePlayManager.getCars()) {
             if (car.checkCollision(character.getSprite())) {
                 Gameplay.gameOver = true;
+            }
+        }
+
+        for (int i = 0; i < gamePlayManager.getCoins().size; i++) {
+            Coin coin = gamePlayManager.getCoins().get(i);
+            if (character.getSprite().getBoundingRectangle().overlaps(coin.getSprite().getBoundingRectangle())) {
+                coin.dispose();
+                scoreManager.incrementCoin();
+                gamePlayManager.removeCoin(i);
             }
         }
 
@@ -81,7 +92,7 @@ public class GameLogic {
 
         if (!onLog) {
             for (Obstacle obs : gamePlayManager.getObs()) {
-                if (obs instanceof Log.River && character.getSprite().getBoundingRectangle().overlaps(obs.getSprite().getBoundingRectangle())) {
+                if (obs instanceof River && character.getSprite().getBoundingRectangle().overlaps(obs.getSprite().getBoundingRectangle())) {
                     System.out.println("Masuk sungai");
                     Gameplay.gameOver = true;
                 }
@@ -97,6 +108,8 @@ public class GameLogic {
             scoreManager.incrementScore();
             Gameplay.lastPositionY = (int) character.getSprite().getY();
         }
+
+
     }
 }
 

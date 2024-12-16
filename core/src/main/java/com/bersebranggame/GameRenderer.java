@@ -10,6 +10,7 @@ import com.bersebranggame.manager.ScoreManager;
 import com.bersebranggame.objects.character.Chicken;
 import com.bersebranggame.objects.obstacle.Log;
 import com.bersebranggame.objects.obstacle.Obstacle;
+import com.bersebranggame.objects.point.Coin;
 import com.bersebranggame.objects.vehicle.Vehicle;
 
 public class GameRenderer {
@@ -47,6 +48,9 @@ public class GameRenderer {
         // Draw background
         spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
 
+        for (Coin coin : gamePlayManager.getCoins()){
+            coin.render(spriteBatch);
+        }
         // Draw obstacles
         for (Obstacle obs : gamePlayManager.getObs()) {
             obs.getSprite().draw(spriteBatch);
@@ -62,11 +66,12 @@ public class GameRenderer {
             log.getSprite().draw(spriteBatch);
         }
 
+
         // Draw chicken player
         chickenPlayer.getSprite().draw(spriteBatch);
 
         // Draw score
-        scoreManager.drawScore(0.45f, 9.8f);
+        scoreManager.drawScore();
 
         // End sprite batch
         spriteBatch.end();

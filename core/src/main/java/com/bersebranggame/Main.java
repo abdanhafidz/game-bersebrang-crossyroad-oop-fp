@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.bersebranggame.manager.GamePlayManager;
 import com.bersebranggame.manager.Gameplay;
 import com.bersebranggame.manager.ScoreManager;
@@ -12,9 +13,11 @@ import com.bersebranggame.Input.InputHandler;
 import com.bersebranggame.screen.StartScreen;
 
 public class Main extends ApplicationAdapter {
+
     private enum GameState {
         START, GAMEPLAY
     }
+
     private GameState currentState; // State game
     private Texture backgroundTexture;
     private Texture startScreenBackground; // Latar belakang untuk layar awal
@@ -25,6 +28,7 @@ public class Main extends ApplicationAdapter {
     private GamePlayManager gamePlayManager;
     private ScoreManager scoreManager;
     private BitmapFont font;
+    private BitmapFont font2;
     private StartScreen startScreen;
     private GameRenderer gameRenderer; // New game renderer
     private GameLogic gameLogic;
@@ -36,16 +40,11 @@ public class Main extends ApplicationAdapter {
         spriteBatch = Gameplay.spriteBatch;
 
         startScreenBackground = new Texture("start_screen_background.png");
-        backgroundTexture = new Texture("background2.jpg");
-        font = new BitmapFont(Gdx.files.internal("font3.fnt"));
-        font.getData().setScale(0.042f);
-
+        backgroundTexture = new Texture("background3.jpg");
+        scoreManager = new ScoreManager();
         gamePlayManager = new GamePlayManager();
-        scoreManager = new ScoreManager(font);
-
         chickenPlayer = new Chicken();
         inputHandler = new InputHandler(chickenPlayer);
-
         gameRenderer = new GameRenderer(spriteBatch, backgroundTexture, scoreManager, gamePlayManager, chickenPlayer);
         gameLogic = new GameLogic(gamePlayManager, chickenPlayer, inputHandler, scoreManager);
 

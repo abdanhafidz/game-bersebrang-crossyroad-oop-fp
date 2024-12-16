@@ -1,25 +1,22 @@
 package com.bersebranggame.manager;
-
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
-import com.bersebranggame.objects.obstacle.Log;
-import com.bersebranggame.objects.obstacle.Obstacle;
-import com.bersebranggame.objects.obstacle.Rock;
+import com.bersebranggame.objects.obstacle.*;
+import com.bersebranggame.objects.point.Coin;
 import com.bersebranggame.objects.vehicle.Car;
 import com.bersebranggame.objects.vehicle.Vehicle;
 import java.util.Random;
-
 import static com.badlogic.gdx.math.MathUtils.random;
 
 public class SpawnManager {
-
 
     private float generateRandomSpeed(float min, float max) {
         return min + random.nextFloat() * (max - min);
     }
 
-    public Vehicle spawnCar(Log.Road road) {
+    public Vehicle spawnCar(Road road) {
         boolean randomDirection = random.nextBoolean();
-        float randomSpeed = generateRandomSpeed(1.0f, 3.0f);
+        float randomSpeed = generateRandomSpeed(2.0f, 4.0f);
 
         return new Car(
             randomDirection ? "car.png" : "car2.png",
@@ -32,7 +29,7 @@ public class SpawnManager {
         );
     }
 
-    public Log spawnLog(Log.River river) {
+    public Log spawnLog(River river) {
         boolean randomDirection = random.nextBoolean();
         float randomSpeed = generateRandomSpeed(1.5f, 2.5f);
         return new Log(
@@ -45,6 +42,18 @@ public class SpawnManager {
             randomDirection
         );
     }
+
+    public Coin spawnCoin(float x, float y) {
+        return  new Coin(
+            x,
+            y,
+            0.5f,
+            0.5f,
+            "coin.png",
+            15,
+            1
+        );
+    };
 
     public Array<Obstacle> createObstacles() {
         Array<Obstacle> obstacles = new Array<>();
@@ -77,11 +86,10 @@ public class SpawnManager {
     private Obstacle createRandomObstacle() {
         Random rand = new Random();
         int randomIdx = rand.nextInt(3);  // Generate 0 or 1
-
         if (randomIdx == 0) {
-            return new Log.River();  // Return a River object
+            return new River();  // Return a River object
         } else if (randomIdx == 1) {
-            return new Log.Road();   // Return a Road object
+            return new Road();   // Return a Road object
         }
         else  {
             return new Rock();

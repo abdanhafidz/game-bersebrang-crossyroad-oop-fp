@@ -1,18 +1,25 @@
 package com.bersebranggame.objects.character;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.bersebranggame.behaviour.Moveable;
 import com.bersebranggame.manager.Gameplay;
-import com.bersebranggame.objects.AbstractEntity;
+import com.bersebranggame.Entity;
 
-public class Character extends AbstractEntity implements Moveable {
+public class Character extends Entity implements Moveable {
     private  Texture texture;
     private float width, height;
     private float positionX, positionY, speed;
     private float prevX;
     private float prevY;
     private String image;
+    private Animation<TextureRegion> walkUp;
+    private Animation<TextureRegion> walkDown;
+    private Animation<TextureRegion> walkLeft;
+    private Animation<TextureRegion> walkRight;
+    private float stateTime;
 
     // Constructor with all parameters
     public Character(float width, float height, float positionX, float positionY, float speed, String image) {
@@ -33,10 +40,6 @@ public class Character extends AbstractEntity implements Moveable {
     public void update() {
     }
 
-    @Override
-    public boolean checkCollision(Sprite otherSprite) {
-        return false;
-    }
 
     @Override
     public void dispose() {

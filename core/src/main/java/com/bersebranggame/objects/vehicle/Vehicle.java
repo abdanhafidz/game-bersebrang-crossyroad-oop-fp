@@ -2,9 +2,10 @@ package com.bersebranggame.objects.vehicle;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.Texture;
-import com.bersebranggame.objects.AbstractEntity;
+import com.bersebranggame.Entity;
+import com.bersebranggame.behaviour.Collidable;
 
-public abstract class Vehicle extends AbstractEntity {
+public abstract class Vehicle extends Entity implements Collidable {
     protected Texture texture;
     protected float speed;
     protected boolean movingRight;
@@ -20,7 +21,4 @@ public abstract class Vehicle extends AbstractEntity {
         this.speed = speed;
         this.movingRight = movingRight;
     }
-
-
-
 }
