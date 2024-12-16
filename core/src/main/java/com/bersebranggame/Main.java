@@ -1,4 +1,5 @@
 package com.bersebranggame;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -20,62 +21,76 @@ import com.bersebranggame.objects.obstacle.Rock;
 import com.bersebranggame.objects.vehicle.Vehicle;
 
 public class Main extends ApplicationAdapter {
-    Texture backgroundTexture;
-    Chicken chickenPlayer;
-    SpriteBatch spriteBatch;
-    private boolean inRiver = true;
+    private enum GameState {
+        START, GAMEPLAY
+    }
+
+    private GameState currentState; // State game
+    private Texture backgroundTexture;
+    private Texture startScreenBackground; // Latar belakang untuk layar awal
+    private Chicken chickenPlayer;
+    private SpriteBatch spriteBatch;
     private boolean gameOver = false;
     private boolean onLog = false;
     private InputHandler inputHandler;
     private GamePlayManager gamePlayManager;
-    private ScoreManager scoreManager; // Menambahkan ScoreManager
-    private float lastPositionX;
+    private ScoreManager scoreManager;
+    private BitmapFont font;
     private float lastPositionY;
+    private StartScreen startScreen;
 
+    @Override
     public void create() {
-        backgroundTexture = new Texture("background.jpg");
-        spriteBatch = new SpriteBatch();
 
-        Gameplay.viewPort.setWorldSize(10, 10);
-        Gameplay.viewPort.getCamera().position.set(5, 5, 0); // Pusatkan kamera di tengah viewport
-        Gameplay.viewPort.getCamera().update();
+        startScreen = new StartScreen();
+        currentState = GameState.START;
+
+        // Load resources
+        spriteBatch = new SpriteBatch();
+        startScreenBackground = new Texture("start_screen_background.png");
+        backgroundTexture = new Texture("background.jpg");
+
+        font = new BitmapFont(Gdx.files.internal("font3.fnt"));
+        font.getData().setScale(0.042f);
 
         gamePlayManager = new GamePlayManager();
-        gamePlayManager.spawnEntities();
+        scoreManager = new ScoreManager(font);
 
+        // Initialize chicken player and input handler
         chickenPlayer = new Chicken();
         inputHandler = new InputHandler(chickenPlayer);
 
-        lastPositionX = 0;
+        // Set initial score
         lastPositionY = 0;
-
-        BitmapFont font = new BitmapFont(Gdx.files.internal("font3.fnt"));
-        font.getData().setScale(0.042f);
-        scoreManager = new ScoreManager(font);
-
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        Gameplay.viewPort.update(width, height, true); // true centers the camera
     }
 
     @Override
     public void render() {
-        if (!gameOver) {
-            inputHandler.handelInput();
-            logic();
+        switch (currentState) {
+            case START:
+                startScreen.render(spriteBatch);
+                if (startScreen.isStartGame()) {
+                    currentState = GameState.GAMEPLAY;
+                    gamePlayManager.spawnEntities();
+                }
+                break;
+
+            case GAMEPLAY:
+                if (!gameOver) {
+                    inputHandler.handelInput();
+                    logic();
+                }
+                draw();
+                break;
         }
-        draw();
     }
 
     private void logic() {
-
-        System.out.println("Position X:" + lastPositionX + " Y:" + lastPositionY);
         spriteBatch = Gameplay.spriteBatch;
         gamePlayManager.updateCars();
         gamePlayManager.updateLog();
 
+        // Collision detection with cars
         for (Vehicle car : gamePlayManager.getCars()) {
             if (car.checkCollision(chickenPlayer.getSprite())) {
                 gameOver = true;
@@ -91,19 +106,35 @@ public class Main extends ApplicationAdapter {
             lastPositionY = 0;
         }
 
-        onLog = false;
+        boolean onLog = false;
         for (Log log : gamePlayManager.getLogs()) {
             if (Intersector.overlaps(chickenPlayer.getSprite().getBoundingRectangle(), log.getSprite().getBoundingRectangle())) {
                 onLog = true;
 
-                if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
-                    inputHandler.handelInput();
+                // Check if the player is above the log
+                if (chickenPlayer.getSprite().getY() >= log.getSprite().getY() &&
+                    chickenPlayer.getSprite().getY() <= log.getSprite().getY() + log.getSprite().getHeight()) {
+
+                    // If no key is pressed, make the player move with the log
+
+                    float delta_ = - Gdx.graphics.getDeltaTime();
+                    if (log.isMovingRight()){
+                        delta_ = delta_ * - 1;
+                    }
+
+                    if (!Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
+                        float logMovementX = log.getSpeed() * delta_; // Assuming the log has a movement speed
+                        chickenPlayer.getSprite().translateX(logMovementX);
+                    } else {
+                        // If a key is pressed, handle input normally
+                        inputHandler.handelInput();
+                    }
+
+                    if (chickenPlayer.getSprite().getX() >= Gameplay.viewPort.getWorldWidth() ||
+                        chickenPlayer.getSprite().getX() < 0) {
+                        gameOver = true;
+                    }
                 }
-                else {
-                    chickenPlayer.getSprite().setX(log.getSprite().getX());
-                    chickenPlayer.getSprite().setY(log.getSprite().getY());
-                }
-                break;
             }
         }
 
@@ -121,19 +152,10 @@ public class Main extends ApplicationAdapter {
             }
         }
 
-        if ((int)chickenPlayer.getSprite().getY() > lastPositionY){
-            System.out.println("Lebih tinggi" + " Score:" + scoreManager.getScore());
+        // Update score if chicken moves higher
+        if ((int) chickenPlayer.getSprite().getY() > lastPositionY) {
             scoreManager.incrementScore();
-            lastPositionY = (int)chickenPlayer.getSprite().getY();
-            System.out.println("score bertambah");
-        }
-    }
-
-    @Override
-    public void resume() {
-        super.resume();
-        if (spriteBatch == null) {
-            Gameplay.spriteBatch = new SpriteBatch();
+            lastPositionY = (int) chickenPlayer.getSprite().getY();
         }
     }
 
@@ -149,8 +171,8 @@ public class Main extends ApplicationAdapter {
 
         spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
 
-        for (Obstacle r_Obstacle : gamePlayManager.getObs()) {
-            r_Obstacle.getSprite().draw(spriteBatch);
+        for (Obstacle obs : gamePlayManager.getObs()) {
+            obs.getSprite().draw(spriteBatch);
         }
         for (Vehicle car : gamePlayManager.getCars()) {
             car.getSprite().draw(spriteBatch);
@@ -162,5 +184,19 @@ public class Main extends ApplicationAdapter {
 
         scoreManager.drawScore(0.45f, 9.8f);
         spriteBatch.end();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        Gameplay.viewPort.update(width, height, true);
+    }
+
+    @Override
+    public void dispose() {
+        spriteBatch.dispose();
+        startScreenBackground.dispose();
+        backgroundTexture.dispose();
+        font.dispose();
+        gamePlayManager.dispose();
     }
 }

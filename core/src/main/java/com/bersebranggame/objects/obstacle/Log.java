@@ -35,6 +35,10 @@ public class Log extends Obstacle implements Moveable {
         return sprite;
     }
 
+    public float getSpeed() {
+        return speed;
+    }
+
     public boolean checkCollision(Sprite playerSprite) {
         return sprite.getBoundingRectangle().overlaps(playerSprite.getBoundingRectangle());
     }
@@ -74,6 +78,9 @@ public class Log extends Obstacle implements Moveable {
         }
     }
 
+    public boolean isMovingRight() {
+        return movingRight;
+    }
 
     @Override
     public void moveUp() {

@@ -36,7 +36,7 @@ public class SpawnManager {
             "log.png",
             random.nextFloat() * Gameplay.width,
             river.getPositionY(),
-            2.0f,
+            3.0f,
             1.0f,
             randomSpeed,
             randomDirection
