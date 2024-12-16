@@ -1,10 +1,7 @@
 package com.bersebranggame.manager;
 import com.badlogic.gdx.utils.Array;
-import com.bersebranggame.objects.enviroment.River;
-import com.bersebranggame.objects.enviroment.Road;
 import com.bersebranggame.objects.obstacle.Log;
 import com.bersebranggame.objects.obstacle.Obstacle;
-import com.bersebranggame.objects.vehicle.Car;
 import com.bersebranggame.objects.vehicle.Vehicle;
 
 public class GamePlayManager {
@@ -26,12 +23,12 @@ public class GamePlayManager {
 
     public void spawnEntities() {
         for (Object obstacle : obs) {
-            if (obstacle instanceof Road) {
-                cars.add(spawnManager.spawnCar((Road) obstacle));
+            if (obstacle instanceof Log.Road) {
+                cars.add(spawnManager.spawnCar((Log.Road) obstacle));
 
-            } else if (obstacle instanceof River) {
+            } else if (obstacle instanceof Log.River) {
 
-                logs.add(spawnManager.spawnLog((River) obstacle));
+                logs.add(spawnManager.spawnLog((Log.River) obstacle));
             }
         }
     }

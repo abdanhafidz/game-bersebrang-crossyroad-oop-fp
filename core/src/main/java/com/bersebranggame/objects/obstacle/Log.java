@@ -89,4 +89,25 @@ public class Log extends Obstacle implements Moveable {
     @Override
     public void moveDown() {
     }
+
+    public static class Road extends Obstacle {
+        public Road(){
+            super(
+                Gameplay.width,
+                1,
+                "road.png"
+            );
+        }
+    }
+
+    public static class River extends Obstacle {
+        public River(){
+            super(
+                Gameplay.width,
+                1,
+                "river.png"
+
+            );
+        }
+    }
 }

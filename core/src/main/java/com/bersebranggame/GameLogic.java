@@ -8,7 +8,6 @@ import com.bersebranggame.manager.GamePlayManager;
 import com.bersebranggame.manager.Gameplay;
 import com.bersebranggame.manager.ScoreManager;
 import com.bersebranggame.objects.character.Character;
-import com.bersebranggame.objects.enviroment.River;
 import com.bersebranggame.objects.obstacle.Log;
 import com.bersebranggame.objects.obstacle.Obstacle;
 import com.bersebranggame.objects.obstacle.Rock;
@@ -32,7 +31,6 @@ public class GameLogic {
     public void logic() {
         gamePlayManager.updateCars();
         gamePlayManager.updateLog();
-
 
         // Collision detection with cars
         for (Vehicle car : gamePlayManager.getCars()) {
@@ -84,7 +82,7 @@ public class GameLogic {
 
         if (!onLog) {
             for (Obstacle obs : gamePlayManager.getObs()) {
-                if (obs instanceof River && character.getSprite().getBoundingRectangle().overlaps(obs.getSprite().getBoundingRectangle())) {
+                if (obs instanceof Log.River && character.getSprite().getBoundingRectangle().overlaps(obs.getSprite().getBoundingRectangle())) {
                     System.out.println("Masuk sungai");
                     Gameplay.gameOver = true;
                 }
@@ -95,13 +93,11 @@ public class GameLogic {
                 }
             }
         }
-
         // Update score if chicken moves higher
         if ((int) character.getSprite().getY() > Gameplay.lastPositionY) {
             scoreManager.incrementScore();
             Gameplay.lastPositionY = (int) character.getSprite().getY();
         }
     }
-
 }
 
