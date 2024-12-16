@@ -2,7 +2,6 @@ package com.bersebranggame.objects;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-
 public abstract class AbstractEntity {
     protected Sprite sprite;
     protected float x, y;
@@ -21,7 +20,6 @@ public abstract class AbstractEntity {
         this.sprite.setPosition(x, y);
         this.sprite.setSize(width, height);
     }
-
 
     public abstract void update();
 

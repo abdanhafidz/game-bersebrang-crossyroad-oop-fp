@@ -3,9 +3,10 @@ package com.bersebranggame.objects.obstacle;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.bersebranggame.behaviour.Moveable;
 import com.bersebranggame.manager.Gameplay;
 
-public class Log extends Obstacle {
+public class Log extends Obstacle implements Moveable {
     private Sprite sprite;
     private Texture texture;
     private float speed;
@@ -21,31 +22,12 @@ public class Log extends Obstacle {
     }
 
     public void update() {
-        float delta = Gdx.graphics.getDeltaTime();
 
-        // Move the car
         if (movingRight) {
-            // Ensure sprite is facing right
-            if (sprite.isFlipX()) {
-                sprite.flip(true, false);
-            }
-            sprite.translateX(speed * delta);
+            moveRight();
 
-            // If car goes beyond right boundary, reset to left
-            if (sprite.getX() > Gameplay.viewPort.getWorldWidth()) {
-                sprite.setX(-sprite.getWidth());
-            }
         } else {
-            // Ensure sprite is facing left
-            if (!sprite.isFlipX()) {
-                sprite.flip(true, false);
-            }
-            sprite.translateX(-speed * delta);
-
-
-            if (sprite.getX() < -sprite.getWidth()) {
-                sprite.setX(Gameplay.viewPort.getWorldWidth());
-            }
+            moveLeft();
         }
     }
 
@@ -63,12 +45,41 @@ public class Log extends Obstacle {
         }
     }
 
-    public boolean isMovingRight() {
-        return movingRight;
+    @Override
+    public void moveRight() {
+        float delta_ = Gdx.graphics.getDeltaTime();
+        if (sprite.isFlipX()) {
+            sprite.flip(true, false);
+        }
+        sprite.translateX(speed * delta_);
+
+        // If car goes beyond right boundary, reset to left
+        if (sprite.getX() > Gameplay.viewPort.getWorldWidth()) {
+            sprite.setX(-sprite.getWidth());
+        }
+
     }
 
-    public float getSpeed() {
-        return speed;
+    @Override
+    public void moveLeft() {
+        float delta_ = Gdx.graphics.getDeltaTime();
+        if (!sprite.isFlipX()) {
+            sprite.flip(true, false);
+        }
+        sprite.translateX(-speed * delta_);
+
+
+        if (sprite.getX() < -sprite.getWidth()) {
+            sprite.setX(Gameplay.viewPort.getWorldWidth());
+        }
     }
 
+
+    @Override
+    public void moveUp() {
+    }
+
+    @Override
+    public void moveDown() {
+    }
 }

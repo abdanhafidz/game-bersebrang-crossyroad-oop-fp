@@ -4,18 +4,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bersebranggame.behaviour.Moveable;
 import com.bersebranggame.manager.Gameplay;
+import com.bersebranggame.objects.AbstractEntity;
 
-public class Character extends Gameplay implements Moveable {
+public class Character extends AbstractEntity implements Moveable {
+    private  Texture texture;
     private float width, height;
     private float positionX, positionY, speed;
     private String image;
 
     // Constructor with all parameters
     public Character(float width, float height, float positionX, float positionY, float speed, String image) {
-        this.width = width;
-        this.height = height;
-        this.positionX = positionX;
-        this.positionY = positionY;
+        super(positionX, positionY, width, height);
         this.speed = speed;
         this.image = image;
         this.texture = new Texture(image);
@@ -34,9 +33,18 @@ public class Character extends Gameplay implements Moveable {
     }
 
 
+    @Override
+    public void update() {
+    }
 
-    public Sprite getSprite() {
-        return sprite;
+    @Override
+    public boolean checkCollision(Sprite otherSprite) {
+        return false;
+    }
+
+    @Override
+    public void dispose() {
+
     }
 
     public void moveRight() {

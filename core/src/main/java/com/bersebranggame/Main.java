@@ -5,49 +5,57 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.bersebranggame.manager.GamePlayManager;
 import com.bersebranggame.manager.Gameplay;
-import com.bersebranggame.manager.LevelManager;
-import com.bersebranggame.manager.SpawnManager;
 import com.bersebranggame.objects.character.Chicken;
 import com.bersebranggame.objects.obstacle.Log;
 import com.bersebranggame.objects.obstacle.Obstacle;
 import com.bersebranggame.objects.enviroment.River;
 import com.bersebranggame.Input.InputHandler;
-import com.bersebranggame.objects.vehicle.Car;
 import com.bersebranggame.objects.vehicle.Vehicle;
 
 public class Main extends ApplicationAdapter {
     Texture backgroundTexture;
     Chicken chickenPlayer;
     SpriteBatch spriteBatch;
-    LevelManager levelManager;
     private boolean inRiver = true;
     private boolean gameOver = false;
     private boolean onLog = false;
     private InputHandler inputHandler;
     private GamePlayManager gamePlayManager;
+    private int score;
+    private String yourScoreName;
+    BitmapFont yourBitmapFontName;
+    private float lastPosition;
 
-    @Override
+
     public void create() {
         backgroundTexture = new Texture("background.jpg");
-//        spriteBatch = Gameplay.spriteBatch;
         spriteBatch = new SpriteBatch();
-//        Gameplay.obstacles = Gameplay.createObstacles();
+
+        // Atur ukuran viewport
+        Gameplay.viewPort.setWorldSize(10, 10);
+        Gameplay.viewPort.getCamera().position.set(5, 5, 0); // Pusatkan kamera di tengah viewport
+        Gameplay.viewPort.getCamera().update();
 
         gamePlayManager = new GamePlayManager();
-
         gamePlayManager.spawnEntities();
 
         chickenPlayer = new Chicken();
-
-
-//        levelManager = new LevelManager(Gameplay.obstacles, 0, 1);
-
         inputHandler = new InputHandler(chickenPlayer);
+
+        lastPosition = 0;
+        score = 0;
+
+
+        yourScoreName = "score : 0";
+
+        yourBitmapFontName = new BitmapFont(Gdx.files.internal("font2.fnt"));
+        yourBitmapFontName.getData().setScale(0.05f);
     }
 
     @Override
@@ -67,10 +75,6 @@ public class Main extends ApplicationAdapter {
 
     private void logic() {
 
-        if (spriteBatch == null) {
-            Gameplay.spriteBatch = new SpriteBatch();
-        }
-
         spriteBatch = Gameplay.spriteBatch;
         gamePlayManager.updateCars();
         gamePlayManager.updateLog();
@@ -83,39 +87,27 @@ public class Main extends ApplicationAdapter {
 
         if (chickenPlayer.getSprite().getY() >= Gameplay.viewPort.getWorldHeight() - 1) {
             chickenPlayer.getSprite().setY(0);
-//            Gameplay.obstacles = Gameplay.createObstacles();
-//            levelManager.setObstacles(Gameplay.obstacles);
-
 
             gamePlayManager.dispose();
             gamePlayManager.setNewObs();
             gamePlayManager.spawnEntities();
-
-//            levelManager.setupLevel(levelManager.getI() + 0.01f, levelManager.getI() + 0.01f);
+            lastPosition = 0;
         }
 
-        onLog = false; // Reset status onLog
+        onLog = false; //
         for (Log log : gamePlayManager.getLogs()) {
 
             if (Intersector.overlaps(chickenPlayer.getSprite().getBoundingRectangle(), log.getSprite().getBoundingRectangle())) {
 
                 onLog = true;
 
-                if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                    chickenPlayer.moveUp();
-                }
-                else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                    chickenPlayer.moveDown();
-                }
-                else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                    chickenPlayer.moveLeft();
-                }
-                else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-                    chickenPlayer.moveRight();
+                if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
+                    inputHandler.handelInput();
                 }
                 else {
-                    chickenPlayer.sprite.setX(log.getSprite().getX());
-                    chickenPlayer.sprite.setY(log.getSprite().getY());
+                    chickenPlayer.getSprite().setX(log.getSprite().getX());
+                    chickenPlayer.getSprite().setY(log.getSprite().getY());
+
                 }
                 break;
             }
@@ -129,14 +121,21 @@ public class Main extends ApplicationAdapter {
                 }
             }
         }
+
+        System.out.println("Postion ayam sekarang:" + chickenPlayer.getSprite().getY());
+
+        if ((int)chickenPlayer.getSprite().getY() > lastPosition){
+
+            yourScoreName = "score :  " + score;
+            score++;
+            lastPosition = (int)chickenPlayer.getSprite().getY();
+            System.out.println("score bertamabah");
+        }
     }
-
-
 
     @Override
     public void resume() {
         super.resume();
-        // Reload SpriteBatch and texture if needed
         if (spriteBatch == null) {
             Gameplay.spriteBatch = new SpriteBatch();
         }
@@ -144,31 +143,32 @@ public class Main extends ApplicationAdapter {
 
     private void draw() {
         ScreenUtils.clear(Color.BROWN);
-//       Gameplay.viewPort.apply();
+
+        Gameplay.viewPort.apply(); // Terapkan viewport
         spriteBatch.setProjectionMatrix(Gameplay.viewPort.getCamera().combined);
 
         spriteBatch.begin();
         float worldWidth = Gameplay.viewPort.getWorldWidth();
         float worldHeight = Gameplay.viewPort.getWorldHeight();
-        spriteBatch.draw(backgroundTexture,0,0, worldWidth, worldHeight);
 
-        for(Obstacle r_Obstacle : gamePlayManager.getObs()){
-            r_Obstacle.sprite.draw(spriteBatch);
+        // Gambar latar belakang
+        spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
+
+        // Gambar objek dalam permainan
+        for (Obstacle r_Obstacle : gamePlayManager.getObs()) {
+            r_Obstacle.getSprite().draw(spriteBatch);
         }
-
-
-
         for (Vehicle car : gamePlayManager.getCars()) {
-            System.out.println("gambar mobil");
             car.getSprite().draw(spriteBatch);
         }
-
-        for (Log log : gamePlayManager.getLogs()){
+        for (Log log : gamePlayManager.getLogs()) {
             log.getSprite().draw(spriteBatch);
         }
+        chickenPlayer.getSprite().draw(spriteBatch);
 
-        chickenPlayer.sprite.draw(spriteBatch);
 
+        yourBitmapFontName.setColor(Color.WHITE);
+        yourBitmapFontName.draw(spriteBatch, yourScoreName, 0.5f, 9.5f); ; // Posisi skor di bagian atas
         spriteBatch.end();
     }
 

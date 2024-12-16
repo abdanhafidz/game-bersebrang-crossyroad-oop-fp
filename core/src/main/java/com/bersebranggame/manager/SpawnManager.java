@@ -59,23 +59,23 @@ public class SpawnManager {
 
         // Initialize the first obstacle
         Obstacle currentObstacle = createRandomObstacle();
-        currentObstacle.sprite.setY(1);  // Set the initial Y position
+        currentObstacle.getSprite().setY(1);  // Set the initial Y position
         currentObstacle.setPositionY(1);
         obstacles.add(currentObstacle);
 
         // Continue creating obstacles until the end of the screen
-        while (currentObstacle.sprite.getY() < Gameplay.height - (currentObstacle.sprite.getHeight() + 2)) {
-            float prevPositionY = currentObstacle.sprite.getY();
+        while (currentObstacle.getSprite().getY() < Gameplay.height - (currentObstacle.getSprite().getHeight() + 2)) {
+            float prevPositionY = currentObstacle.getSprite().getY();
 
             // Choose a random next obstacle
             currentObstacle = createRandomObstacle();
 
             // Randomly offset the Y position
             int randDist = rand.nextInt(2) + 1;  // Random distance between 1 and 2
-            currentObstacle.sprite.setY(prevPositionY + randDist);
+            currentObstacle.getSprite().setY(prevPositionY + randDist);
 
             // Update position and add to the list
-            currentObstacle.setPositionY(currentObstacle.sprite.getY());
+            currentObstacle.setPositionY(currentObstacle.getSprite().getY());
             obstacles.add(currentObstacle);
         }
 

@@ -21,13 +21,13 @@ public class GamePlayManager {
     }
 
     public void setNewObs(){
+
         obs = spawnManager.createObstacles();
     }
 
     public void spawnEntities() {
         for (Object obstacle : obs) {
             if (obstacle instanceof Road) {
-
                 cars.add(spawnManager.spawnCar((Road) obstacle));
 
             } else if (obstacle instanceof River) {

@@ -45,7 +45,6 @@ public class Car extends Vehicle implements Moveable, Collidable {
     @Override
     public void moveLeft() {
 
-
         float delta_ = Gdx.graphics.getDeltaTime();
         if (!sprite.isFlipX()) {
             sprite.flip(true, false);
@@ -56,7 +55,6 @@ public class Car extends Vehicle implements Moveable, Collidable {
         if (sprite.getX() < -sprite.getWidth()) {
             sprite.setX(Gameplay.viewPort.getWorldWidth());
         }
-
     }
 
 
