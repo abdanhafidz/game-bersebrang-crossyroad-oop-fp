@@ -21,7 +21,6 @@ public class GamePlayManager {
     }
 
     public void setNewObs(){
-
         obs = spawnManager.createObstacles();
     }
 

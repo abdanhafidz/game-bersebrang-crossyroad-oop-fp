@@ -1,16 +1,13 @@
 package com.bersebranggame.manager;
 
-
 import com.badlogic.gdx.utils.Array;
 import com.bersebranggame.objects.enviroment.River;
 import com.bersebranggame.objects.enviroment.Road;
 import com.bersebranggame.objects.obstacle.Log;
 import com.bersebranggame.objects.obstacle.Obstacle;
+import com.bersebranggame.objects.obstacle.Rock;
 import com.bersebranggame.objects.vehicle.Car;
 import com.bersebranggame.objects.vehicle.Vehicle;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import static com.badlogic.gdx.math.MathUtils.random;
@@ -33,8 +30,8 @@ public class SpawnManager {
     }
 
     public Log spawnLog(River river) {
+        boolean randomDirection = random.nextBoolean();
         float randomSpeed = generateRandomSpeed(1.5f, 2.5f);
-
         return new Log(
             "log.png",
             random.nextFloat() * Gameplay.width,
@@ -42,7 +39,7 @@ public class SpawnManager {
             2.0f,
             1.0f,
             randomSpeed,
-            false
+            randomDirection
         );
     }
 
@@ -84,12 +81,15 @@ public class SpawnManager {
 
     private Obstacle createRandomObstacle() {
         Random rand = new Random();
-        int randomIdx = rand.nextInt(2);  // Generate 0 or 1
+        int randomIdx = rand.nextInt(3);  // Generate 0 or 1
 
         if (randomIdx == 0) {
             return new River();  // Return a River object
-        } else {
+        } else if (randomIdx == 1) {
             return new Road();   // Return a Road object
+        }
+        else  {
+            return new Rock();
         }
     }
 

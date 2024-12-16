@@ -37,7 +37,6 @@ public class Main extends ApplicationAdapter {
         backgroundTexture = new Texture("background.jpg");
         spriteBatch = new SpriteBatch();
 
-        // Atur ukuran viewport
         Gameplay.viewPort.setWorldSize(10, 10);
         Gameplay.viewPort.getCamera().position.set(5, 5, 0); // Pusatkan kamera di tengah viewport
         Gameplay.viewPort.getCamera().update();
@@ -50,12 +49,9 @@ public class Main extends ApplicationAdapter {
 
         lastPosition = 0;
         score = 0;
-
-
-        yourScoreName = "score : 0";
-
-        yourBitmapFontName = new BitmapFont(Gdx.files.internal("font2.fnt"));
-        yourBitmapFontName.getData().setScale(0.05f);
+        yourScoreName = "score :0";
+        yourBitmapFontName = new BitmapFont(Gdx.files.internal("font3.fnt"));
+        yourBitmapFontName.getData().setScale(0.045f, 0.045f);
     }
 
     @Override
@@ -107,7 +103,6 @@ public class Main extends ApplicationAdapter {
                 else {
                     chickenPlayer.getSprite().setX(log.getSprite().getX());
                     chickenPlayer.getSprite().setY(log.getSprite().getY());
-
                 }
                 break;
             }
@@ -122,15 +117,14 @@ public class Main extends ApplicationAdapter {
             }
         }
 
-        System.out.println("Postion ayam sekarang:" + chickenPlayer.getSprite().getY());
 
         if ((int)chickenPlayer.getSprite().getY() > lastPosition){
-
-            yourScoreName = "score :  " + score;
+            yourScoreName = "score:" + score;
             score++;
             lastPosition = (int)chickenPlayer.getSprite().getY();
             System.out.println("score bertamabah");
         }
+
     }
 
     @Override
@@ -166,9 +160,9 @@ public class Main extends ApplicationAdapter {
         }
         chickenPlayer.getSprite().draw(spriteBatch);
 
-
         yourBitmapFontName.setColor(Color.WHITE);
-        yourBitmapFontName.draw(spriteBatch, yourScoreName, 0.5f, 9.5f); ; // Posisi skor di bagian atas
+        yourScoreName = "score :" + score;
+        yourBitmapFontName.draw(spriteBatch, yourScoreName, 0.45f, 9.8f); ; // Posisi skor di bagian atas
         spriteBatch.end();
     }
 
