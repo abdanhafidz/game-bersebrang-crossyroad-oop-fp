@@ -1,5 +1,6 @@
 package com.bersebranggame.objects.obstacle;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bersebranggame.behaviour.Collidable;
 
 import java.util.Random;

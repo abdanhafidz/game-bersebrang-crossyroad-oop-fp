@@ -10,6 +10,8 @@ public class Character extends AbstractEntity implements Moveable {
     private  Texture texture;
     private float width, height;
     private float positionX, positionY, speed;
+    private float prevX;
+    private float prevY;
     private String image;
 
     // Constructor with all parameters
@@ -27,12 +29,6 @@ public class Character extends AbstractEntity implements Moveable {
         this(width, height, 0, 0, speed, image);
     }
 
-    // Constructor with optional width, height, and position (position defaults to 0, 0, width/height default to 50)
-    public Character(float speed, String image) {
-        this(50, 50, 0, 0, speed, image); // Default width = 50, height = 50
-    }
-
-
     @Override
     public void update() {
     }
@@ -44,12 +40,12 @@ public class Character extends AbstractEntity implements Moveable {
 
     @Override
     public void dispose() {
-
     }
 
     public void moveRight() {
         Gameplay.delta = Gdx.graphics.getDeltaTime();
         if(this.sprite.getX() < Gameplay.viewPort.getWorldWidth() - 1){
+            this.prevX = this.sprite.getX();
             this.sprite.translateX(this.speed * Gameplay.delta);
         }
     }
@@ -57,6 +53,7 @@ public class Character extends AbstractEntity implements Moveable {
     public void moveLeft() {
         Gameplay.delta = Gdx.graphics.getDeltaTime();
         if(this.sprite.getX() >= 0){
+            this.prevX = this.sprite.getX();
             this.sprite.translateX(-this.speed * Gameplay.delta);
         }
     }
@@ -64,6 +61,7 @@ public class Character extends AbstractEntity implements Moveable {
     public void moveUp() {
         Gameplay.delta = Gdx.graphics.getDeltaTime();
         if(this.sprite.getY() < Gameplay.viewPort.getWorldHeight() - 1){
+            this.prevY = this.sprite.getY();
             this.sprite.translateY(this.speed * Gameplay.delta);
         }
     }
@@ -71,8 +69,17 @@ public class Character extends AbstractEntity implements Moveable {
     public void moveDown() {
         Gameplay.delta = Gdx.graphics.getDeltaTime();
         if(this.sprite.getY() >= 0 ){
+            this.prevY = this.sprite.getY();
             this.sprite.translateY(-this.speed * Gameplay.delta);
         }
     }
 
+    public float getPrevX() {
+        return prevX;
+    }
+
+
+    public float getPrevY() {
+        return prevY;
+    }
 }

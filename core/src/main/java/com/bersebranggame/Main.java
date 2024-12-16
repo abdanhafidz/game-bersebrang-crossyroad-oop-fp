@@ -1,5 +1,4 @@
 package com.bersebranggame;
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -11,11 +10,13 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.bersebranggame.manager.GamePlayManager;
 import com.bersebranggame.manager.Gameplay;
+import com.bersebranggame.manager.ScoreManager;
 import com.bersebranggame.objects.character.Chicken;
 import com.bersebranggame.objects.obstacle.Log;
 import com.bersebranggame.objects.obstacle.Obstacle;
 import com.bersebranggame.objects.enviroment.River;
 import com.bersebranggame.Input.InputHandler;
+import com.bersebranggame.objects.obstacle.Rock;
 import com.bersebranggame.objects.vehicle.Vehicle;
 
 public class Main extends ApplicationAdapter {
@@ -27,11 +28,9 @@ public class Main extends ApplicationAdapter {
     private boolean onLog = false;
     private InputHandler inputHandler;
     private GamePlayManager gamePlayManager;
-    private int score;
-    private String yourScoreName;
-    BitmapFont yourBitmapFontName;
-    private float lastPosition;
-
+    private ScoreManager scoreManager; // Menambahkan ScoreManager
+    private float lastPositionX;
+    private float lastPositionY;
 
     public void create() {
         backgroundTexture = new Texture("background.jpg");
@@ -47,11 +46,13 @@ public class Main extends ApplicationAdapter {
         chickenPlayer = new Chicken();
         inputHandler = new InputHandler(chickenPlayer);
 
-        lastPosition = 0;
-        score = 0;
-        yourScoreName = "score :0";
-        yourBitmapFontName = new BitmapFont(Gdx.files.internal("font3.fnt"));
-        yourBitmapFontName.getData().setScale(0.045f, 0.045f);
+        lastPositionX = 0;
+        lastPositionY = 0;
+
+        BitmapFont font = new BitmapFont(Gdx.files.internal("font3.fnt"));
+        font.getData().setScale(0.042f);
+        scoreManager = new ScoreManager(font);
+
     }
 
     @Override
@@ -68,9 +69,9 @@ public class Main extends ApplicationAdapter {
         draw();
     }
 
-
     private void logic() {
 
+        System.out.println("Position X:" + lastPositionX + " Y:" + lastPositionY);
         spriteBatch = Gameplay.spriteBatch;
         gamePlayManager.updateCars();
         gamePlayManager.updateLog();
@@ -87,14 +88,12 @@ public class Main extends ApplicationAdapter {
             gamePlayManager.dispose();
             gamePlayManager.setNewObs();
             gamePlayManager.spawnEntities();
-            lastPosition = 0;
+            lastPositionY = 0;
         }
 
-        onLog = false; //
+        onLog = false;
         for (Log log : gamePlayManager.getLogs()) {
-
             if (Intersector.overlaps(chickenPlayer.getSprite().getBoundingRectangle(), log.getSprite().getBoundingRectangle())) {
-
                 onLog = true;
 
                 if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
@@ -114,17 +113,20 @@ public class Main extends ApplicationAdapter {
                     System.out.println("Masuk sungai");
                     gameOver = true;
                 }
+
+                if (obs instanceof Rock && chickenPlayer.getSprite().getBoundingRectangle().overlaps(obs.getSprite().getBoundingRectangle())) {
+                    chickenPlayer.getSprite().setX(chickenPlayer.getPrevX());
+                    chickenPlayer.getSprite().setY(chickenPlayer.getPrevY());
+                }
             }
         }
 
-
-        if ((int)chickenPlayer.getSprite().getY() > lastPosition){
-            yourScoreName = "score:" + score;
-            score++;
-            lastPosition = (int)chickenPlayer.getSprite().getY();
-            System.out.println("score bertamabah");
+        if ((int)chickenPlayer.getSprite().getY() > lastPositionY){
+            System.out.println("Lebih tinggi" + " Score:" + scoreManager.getScore());
+            scoreManager.incrementScore();
+            lastPositionY = (int)chickenPlayer.getSprite().getY();
+            System.out.println("score bertambah");
         }
-
     }
 
     @Override
@@ -138,17 +140,15 @@ public class Main extends ApplicationAdapter {
     private void draw() {
         ScreenUtils.clear(Color.BROWN);
 
-        Gameplay.viewPort.apply(); // Terapkan viewport
+        Gameplay.viewPort.apply();
         spriteBatch.setProjectionMatrix(Gameplay.viewPort.getCamera().combined);
 
         spriteBatch.begin();
         float worldWidth = Gameplay.viewPort.getWorldWidth();
         float worldHeight = Gameplay.viewPort.getWorldHeight();
 
-        // Gambar latar belakang
         spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
 
-        // Gambar objek dalam permainan
         for (Obstacle r_Obstacle : gamePlayManager.getObs()) {
             r_Obstacle.getSprite().draw(spriteBatch);
         }
@@ -160,10 +160,7 @@ public class Main extends ApplicationAdapter {
         }
         chickenPlayer.getSprite().draw(spriteBatch);
 
-        yourBitmapFontName.setColor(Color.WHITE);
-        yourScoreName = "score :" + score;
-        yourBitmapFontName.draw(spriteBatch, yourScoreName, 0.45f, 9.8f); ; // Posisi skor di bagian atas
+        scoreManager.drawScore(0.45f, 9.8f);
         spriteBatch.end();
     }
-
 }
