@@ -47,7 +47,6 @@ public class Main extends ApplicationAdapter {
         inputHandler = new InputHandler(chickenPlayer);
 
         gameRenderer = new GameRenderer(spriteBatch, backgroundTexture, scoreManager, gamePlayManager, chickenPlayer);
-
         gameLogic = new GameLogic(gamePlayManager, chickenPlayer, inputHandler, scoreManager);
 
     }

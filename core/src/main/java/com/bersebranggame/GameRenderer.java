@@ -74,8 +74,7 @@ public class GameRenderer {
 
     // Optional: Dispose method to clean up resources
     public void dispose() {
-        // Note: Do not dispose of textures or sprite batch here if they are
-        // managed by the main game class
+        spriteBatch.dispose();
         backgroundTexture.dispose();
     }
 }

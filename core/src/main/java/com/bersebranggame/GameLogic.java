@@ -19,7 +19,6 @@ public class GameLogic {
     private InputHandler inputHandler;
     private ScoreManager scoreManager;
 
-
     public GameLogic(GamePlayManager gameplayManager, Character character, InputHandler inputHandler, ScoreManager scoreManager) {
         this.gamePlayManager = gameplayManager;
         this.character = character;
@@ -93,7 +92,7 @@ public class GameLogic {
                 }
             }
         }
-        // Update score if chicken moves higher
+        // Update score klo player nyampe top screeen
         if ((int) character.getSprite().getY() > Gameplay.lastPositionY) {
             scoreManager.incrementScore();
             Gameplay.lastPositionY = (int) character.getSprite().getY();
