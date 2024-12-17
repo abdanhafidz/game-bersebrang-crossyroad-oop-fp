@@ -29,10 +29,11 @@ public class GameLogic {
 
     }
     public static boolean isContained(Rectangle inner, Rectangle outer, float margin) {
+        System.out.println(inner.y + " " + outer.y);
         return inner.x >= outer.x - margin &&
             inner.x + inner.width <= outer.x + outer.width + margin &&
             inner.y >= outer.y - margin &&
-            inner.y + inner.height <= outer.y + outer.height + margin;
+            inner.y + inner.height <= outer.y + outer.height  + margin;
     }
     public void logic() {
         gamePlayManager.updateCars();
@@ -41,7 +42,7 @@ public class GameLogic {
 
         // Collision detection untuk Vehcile dengan Player
         for (Vehicle car : gamePlayManager.getCars()) {
-            if (car.checkCollision(character.getSprite())) {
+            if (isContained( character.getSprite().getBoundingRectangle(), car.getSprite().getBoundingRectangle(),0.3f)) {
                 Gameplay.gameOver = true;
             }
         }
@@ -100,12 +101,12 @@ public class GameLogic {
 
         if (!onLog) {
             for (Obstacle obs : gamePlayManager.getObs()) {
-                if (obs instanceof River && isContained( character.getSprite().getBoundingRectangle(), obs.getSprite().getBoundingRectangle(),0)) {
+                if (obs instanceof River && isContained( character.getSprite().getBoundingRectangle(), obs.getSprite().getBoundingRectangle(),0.3f) && !onLog) {
                     System.out.println("Masuk sungai");
                     Gameplay.gameOver = true;
                 }
 
-                if (obs instanceof Rock &&  isContained(character.getSprite().getBoundingRectangle(), obs.getSprite().getBoundingRectangle(),0)) {
+                if (obs instanceof Rock &&  isContained(character.getSprite().getBoundingRectangle(), obs.getSprite().getBoundingRectangle(),0.3f)) {
                     character.getSprite().setX(character.getPrevX());
                     character.getSprite().setY(character.getPrevY());
                 }

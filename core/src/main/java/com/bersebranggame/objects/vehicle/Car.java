@@ -59,7 +59,7 @@ public class Car extends Vehicle implements Moveable{
 
     @Override
     public Boolean checkCollision(Sprite otherSprite) {
-        return Intersector.overlaps(sprite.getBoundingRectangle(), otherSprite.getBoundingRectangle());
+        return GameLogic.isContained(otherSprite.getBoundingRectangle(),sprite.getBoundingRectangle(),-0.3f);
        
     }
 
