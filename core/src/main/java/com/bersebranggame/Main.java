@@ -40,7 +40,7 @@ public class Main extends ApplicationAdapter {
         spriteBatch = Gameplay.spriteBatch;
 
         startScreenBackground = new Texture("start_screen_background.png");
-        backgroundTexture = new Texture("background3.jpg");
+        backgroundTexture = new Texture("background2.jpg");
         scoreManager = new ScoreManager();
         gamePlayManager = new GamePlayManager();
         chickenPlayer = new Chicken();
