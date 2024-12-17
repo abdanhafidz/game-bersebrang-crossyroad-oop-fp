@@ -2,6 +2,7 @@ package com.bersebranggame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.bersebranggame.Input.InputHandler;
 import com.bersebranggame.manager.GamePlayManager;
 import com.bersebranggame.manager.Gameplay;
@@ -27,7 +28,12 @@ public class GameLogic {
         this.scoreManager = scoreManager;
 
     }
-
+    public static boolean isContained(Rectangle inner, Rectangle outer, float margin) {
+        return inner.x >= outer.x - margin &&
+            inner.x + inner.width <= outer.x + outer.width + margin &&
+            inner.y >= outer.y - margin &&
+            inner.y + inner.height <= outer.y + outer.height + margin;
+    }
     public void logic() {
         gamePlayManager.updateCars();
         gamePlayManager.updateLog();
@@ -60,7 +66,7 @@ public class GameLogic {
 
         boolean onLog = false;
         for (Log log : gamePlayManager.getLogs()) {
-            if (Intersector.overlaps(character.getSprite().getBoundingRectangle(), log.getSprite().getBoundingRectangle())) {
+            if (isContained(character.getSprite().getBoundingRectangle(), log.getSprite().getBoundingRectangle(), 0.1f)) {
                 onLog = true;
 
                 // Check if the player is above the log
@@ -92,12 +98,12 @@ public class GameLogic {
 
         if (!onLog) {
             for (Obstacle obs : gamePlayManager.getObs()) {
-                if (obs instanceof River && character.getSprite().getBoundingRectangle().overlaps(obs.getSprite().getBoundingRectangle())) {
+                if (obs instanceof River && isContained(character.getSprite().getBoundingRectangle(), obs.getSprite().getBoundingRectangle(), 0.1f)) {
                     System.out.println("Masuk sungai");
                     Gameplay.gameOver = true;
                 }
 
-                if (obs instanceof Rock && character.getSprite().getBoundingRectangle().overlaps(obs.getSprite().getBoundingRectangle())) {
+                if (obs instanceof Rock &&  isContained(character.getSprite().getBoundingRectangle(), obs.getSprite().getBoundingRectangle(), 0.1f)) {
                     character.getSprite().setX(character.getPrevX());
                     character.getSprite().setY(character.getPrevY());
                 }

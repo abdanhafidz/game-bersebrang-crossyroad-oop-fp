@@ -24,15 +24,15 @@ public class Chicken extends Character {
     private boolean isMoving = false;
 
     public Chicken() {
-        super(1f, 0.8f, 4f, "char2.png");
+        super(1f, 0.8f, 4f, "Char_001_Init.png");
         loadAnimations();
     }
 
     private void loadAnimations() {
         // Load movement sprite sheet
-        Texture moveSheet = new Texture(Gdx.files.internal("Char_001.png"));
+        Texture moveSheet = new Texture("Char_001.png");
         // Load idle sprite sheet
-        Texture idleSheet = new Texture(Gdx.files.internal("Char_001_Idle"));
+        Texture idleSheet = new Texture("Char_001_Idle.png");
 
         // Assuming 4 columns for animation frames
         int frameCols = 4;
@@ -49,6 +49,8 @@ public class Chicken extends Character {
         idleLeftAnimation = initializeAnimation(idleSheet, frameCols, frameRows, 1);
         idleRightAnimation = initializeAnimation(idleSheet, frameCols, frameRows, 2);
         idleUpAnimation = initializeAnimation(idleSheet, frameCols, frameRows, 3);
+
+
     }
 
     private Animation<TextureRegion> initializeAnimation(
