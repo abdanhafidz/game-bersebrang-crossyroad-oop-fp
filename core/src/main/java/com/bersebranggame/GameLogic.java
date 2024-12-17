@@ -7,6 +7,7 @@ import com.bersebranggame.Input.InputHandler;
 import com.bersebranggame.manager.GamePlayManager;
 import com.bersebranggame.manager.Gameplay;
 import com.bersebranggame.manager.ScoreManager;
+import com.bersebranggame.manager.SoundManager;
 import com.bersebranggame.objects.character.Character;
 import com.bersebranggame.objects.obstacle.Log;
 import com.bersebranggame.objects.obstacle.Obstacle;
@@ -20,12 +21,15 @@ public class GameLogic {
     private Character character;
     private InputHandler inputHandler;
     private ScoreManager scoreManager;
+    private SoundManager  soundManager;
 
-    public GameLogic(GamePlayManager gameplayManager, Character character, InputHandler inputHandler, ScoreManager scoreManager) {
+    public GameLogic(GamePlayManager gameplayManager, Character character,
+                     InputHandler inputHandler, ScoreManager scoreManager, SoundManager soundManager) {
         this.gamePlayManager = gameplayManager;
         this.character = character;
         this.inputHandler = inputHandler;
         this.scoreManager = scoreManager;
+        this.soundManager = soundManager;
 
     }
     public static boolean isContained(Rectangle inner, Rectangle outer, float margin) {
@@ -51,6 +55,7 @@ public class GameLogic {
             Coin coin = gamePlayManager.getCoins().get(i);
             if (character.getSprite().getBoundingRectangle().overlaps(coin.getSprite().getBoundingRectangle())) {
                 coin.dispose();
+                soundManager.playCoinSound();
                 scoreManager.incrementCoin();
                 gamePlayManager.removeCoin(i);
             }
@@ -59,7 +64,7 @@ public class GameLogic {
         if (character.getSprite().getY() >= Gameplay.viewPort.getWorldHeight() - 1) {
             character.getSprite().setY(0);
 
-            gamePlayManager.dispose();
+            gamePlayManager.disposePreviousLevel();
             Gameplay.setBackground();
             gamePlayManager.setNewObs();
             gamePlayManager.spawnEntities();
@@ -68,7 +73,7 @@ public class GameLogic {
 
         boolean onLog = false;
         for (Log log : gamePlayManager.getLogs()) {
-            
+
             if (Intersector.overlaps(character.getSprite().getBoundingRectangle(), log.getSprite().getBoundingRectangle())) {
                 onLog = true;
 
@@ -110,7 +115,7 @@ public class GameLogic {
                     character.getSprite().setX(character.getPrevX());
                     character.getSprite().setY(character.getPrevY());
                 }
-                
+
             }
         }
         // Update score klo player nyampe top screeen

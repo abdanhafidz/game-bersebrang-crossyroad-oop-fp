@@ -4,8 +4,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.Texture;
 import com.bersebranggame.Entity;
 import com.bersebranggame.behaviour.Collidable;
+import com.bersebranggame.behaviour.Update;
 
-public abstract class Vehicle extends Entity implements Collidable {
+public abstract class Vehicle extends Entity implements Collidable, Update {
     protected Texture texture;
     protected float speed;
     protected boolean movingRight;

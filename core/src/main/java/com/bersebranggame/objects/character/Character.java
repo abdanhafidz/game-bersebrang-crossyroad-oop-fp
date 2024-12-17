@@ -3,10 +3,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bersebranggame.behaviour.Moveable;
+import com.bersebranggame.behaviour.Update;
 import com.bersebranggame.manager.Gameplay;
 import com.bersebranggame.Entity;
 
-public class Character extends Entity implements Moveable {
+public class Character extends Entity implements Moveable, Update {
     private  Texture texture;
     private float width, height;
     private float positionX, positionY, speed;

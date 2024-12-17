@@ -20,7 +20,7 @@ public class ScoreManager {
         this.font = new BitmapFont(Gdx.files.internal("font3.fnt"));
         this.font.getData().setScale(0.042f);
         this.font2 = new BitmapFont(Gdx.files.internal("font3.fnt"));
-        this.font2.getData().setScale(0.036f);
+        this.font2.getData().setScale(0.042f);
     }
 
     public void incrementScore() {

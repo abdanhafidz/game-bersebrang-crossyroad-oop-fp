@@ -7,6 +7,7 @@ import com.bersebranggame.Input.InputHandler;
 import com.bersebranggame.manager.GamePlayManager;
 import com.bersebranggame.manager.Gameplay;
 import com.bersebranggame.manager.ScoreManager;
+import com.bersebranggame.manager.SoundManager;
 import com.bersebranggame.objects.character.Chicken;
 import com.bersebranggame.screen.StartScreen;
 
@@ -30,6 +31,7 @@ public class Main extends ApplicationAdapter {
     private StartScreen startScreen;
     private GameRenderer gameRenderer; // New game renderer
     private GameLogic gameLogic;
+    private SoundManager soundManager;
 
     @Override
     public void create() {
@@ -44,8 +46,9 @@ public class Main extends ApplicationAdapter {
         chickenPlayer = new Chicken();
         inputHandler = new InputHandler(chickenPlayer);
         gameRenderer = new GameRenderer(spriteBatch, backgroundTexture, scoreManager, gamePlayManager, chickenPlayer);
-        gameLogic = new GameLogic(gamePlayManager, chickenPlayer, inputHandler, scoreManager);
-
+        soundManager = new SoundManager();
+        soundManager.initialize();
+        gameLogic = new GameLogic(gamePlayManager, chickenPlayer, inputHandler, scoreManager, soundManager);
     }
 
     @Override
@@ -56,6 +59,7 @@ public class Main extends ApplicationAdapter {
                 if (startScreen.isStartGame()) {
                     currentState = GameState.GAMEPLAY;
                     gamePlayManager.spawnEntities();
+                    soundManager.playBackgroundMusic();
                     startScreenBackground.dispose();
                 }
                 break;

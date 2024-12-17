@@ -1,4 +1,6 @@
 package com.bersebranggame.manager;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.bersebranggame.objects.obstacle.Log;
@@ -8,12 +10,15 @@ import com.bersebranggame.objects.obstacle.Road;
 import com.bersebranggame.objects.point.Coin;
 import com.bersebranggame.objects.vehicle.Vehicle;
 
+import java.security.PrivateKey;
+
 public class GamePlayManager {
     private Array<Vehicle> cars;
     private Array<Obstacle> obs;
     private Array<Log> logs;
     private SpawnManager spawnManager;
     private Array<Coin> coins;
+
 
     public GamePlayManager() {
         cars = new Array<>();
@@ -28,12 +33,13 @@ public class GamePlayManager {
     }
 
     public void spawnEntities() {
+
         for (Object obstacle : obs) {
             if (obstacle instanceof Road) {
+
                 cars.add(spawnManager.spawnCar((Road) obstacle));
 
             } else if (obstacle instanceof River) {
-
                 logs.add(spawnManager.spawnLog((River) obstacle));
             }
         }
@@ -84,7 +90,7 @@ public class GamePlayManager {
         coins.removeIndex(i);
     }
 
-    private void disposePreviousLevel() {
+    public void disposePreviousLevel() {
 
         // Dispose cars log dan juga array nya sebelumnya jika ganti level le
         for (Vehicle car : cars) {

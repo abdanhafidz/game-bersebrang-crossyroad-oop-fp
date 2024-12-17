@@ -61,7 +61,6 @@ public abstract class Entity {
         this.height = height;
         this.sprite.setSize(width, height);
     }
-
-    public abstract void update();
+    
     public abstract void dispose();
 }

@@ -4,16 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.bersebranggame.GameLogic;
 import com.bersebranggame.behaviour.Moveable;
+import com.bersebranggame.behaviour.Update;
 import com.bersebranggame.manager.Gameplay;
 import com.badlogic.gdx.math.Intersector;
-public class Car extends Vehicle implements Moveable{
+public class Car extends Vehicle implements Moveable {
     public Car(String imagePath, float x, float y, float width, float height, float speed, boolean movingRight) {
         super(imagePath, x, y, width, height, speed, movingRight);
     }
 
     @Override
     public void update() {
-
         if (movingRight) {
             moveRight();
         } else {
@@ -60,7 +60,7 @@ public class Car extends Vehicle implements Moveable{
     @Override
     public Boolean checkCollision(Sprite otherSprite) {
         return GameLogic.isContained(otherSprite.getBoundingRectangle(),sprite.getBoundingRectangle(),-0.3f);
-       
+
     }
 
     @Override
