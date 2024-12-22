@@ -1,93 +1,109 @@
 package com.bersebranggame;
-
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.bersebranggame.canvas.Gameplay;
+import com.bersebranggame.Input.InputHandler;
+import com.bersebranggame.manager.GamePlayManager;
+import com.bersebranggame.manager.Gameplay;
+import com.bersebranggame.manager.ScoreManager;
+import com.bersebranggame.manager.SoundManager;
 import com.bersebranggame.objects.character.Chicken;
-import com.bersebranggame.objects.obstacle.Obstacle;
-import java.util.ArrayList;
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
+import com.bersebranggame.screen.GameOverScreen;
+import com.bersebranggame.screen.StartScreen;
 public class Main extends ApplicationAdapter {
-    Texture backgroundTexture;
-    Chicken chickenPlayer;
-    SpriteBatch spriteBatch;
+
+    private enum GameState {
+        START, GAMEPLAY, GAMEOVER
+    }
+
+    private GameState currentState; // State game
+    private Texture backgroundTexture;
+    private Texture startScreenBackground; // Latar belakang untuk layar awal
+    private Chicken chickenPlayer;
+    private SpriteBatch spriteBatch;
+    private boolean onLog = false;
+    private InputHandler inputHandler;
+    private GamePlayManager gamePlayManager;
+    private ScoreManager scoreManager;
+    private BitmapFont font;
+    private BitmapFont font2;
+    private StartScreen startScreen;
+    private GameRenderer gameRenderer; // New game renderer
+    private GameLogic gameLogic;
+    private SoundManager soundManager;
+    private GameOverScreen gameOverScreen;
+
     @Override
     public void create() {
-        backgroundTexture = new Texture("background.jpg");
+        startScreen = new StartScreen();
+        currentState = GameState.START;
         spriteBatch = Gameplay.spriteBatch;
-        Gameplay.obstacles = Gameplay.createObstacles();
+        startScreenBackground = new Texture("start_screen_background.png");
+        Gameplay.setBackground();
+        backgroundTexture = Gameplay.background;
+        scoreManager = new ScoreManager();
+        gamePlayManager = new GamePlayManager();
         chickenPlayer = new Chicken();
+        inputHandler = new InputHandler(chickenPlayer);
+        gameRenderer = new GameRenderer(spriteBatch, backgroundTexture, scoreManager, gamePlayManager, chickenPlayer);
+        soundManager = new SoundManager();
+        soundManager.initialize();
+        gameLogic = new GameLogic(gamePlayManager, chickenPlayer, inputHandler, scoreManager, soundManager);
+        gameOverScreen = new GameOverScreen();
+    }
+
+    @Override
+    public void render() {
+        switch (currentState) {
+            case START:
+                startScreen.render(spriteBatch);
+                if (startScreen.isStartGame()) {
+                    currentState = GameState.GAMEPLAY;
+                    gamePlayManager.spawnEntities();
+                    soundManager.playBackgroundMusic();
+                    startScreenBackground.dispose();
+                }
+                break;
+
+
+            case GAMEPLAY:
+                if (!Gameplay.gameOver) {
+                    inputHandler.handelInput();
+                    gameLogic.logic();
+                    gameRenderer.render();
+                }else{
+                    currentState = GameState.GAMEOVER;
+                    gameRenderer.dispose();
+                }
+                break;
+            case GAMEOVER:
+                if (Gameplay.gameOver) {
+                    System.out.println("Game Over!");
+                    gameOverScreen.render(spriteBatch);
+                } else {
+                    Gameplay.gameOver = false;
+                    currentState = GameState.GAMEPLAY;
+                    gameRenderer.render();
+                 
+                }
+                break;
+        }
     }
 
     @Override
     public void resize(int width, int height) {
-        Gameplay.viewPort.update(width, height, true); // true centers the camera
-    }
-    @Override
-    public void render() {
-        // organize code into three methods
-        input();
-        logic();
-        draw();
-    }
-    
-    private void input() {
-    Gameplay.delta = 15;
-    if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-        chickenPlayer.moveLeft();
-    }
-    if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-        chickenPlayer.moveRight();
-    }
-    if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-        chickenPlayer.moveUp();
+        Gameplay.viewPort.update(width, height, true);
     }
 
-    if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-        chickenPlayer.moveDown();
-    }
-
-    }
-    
-    private void logic() {
-        if (spriteBatch == null) {
-            Gameplay.spriteBatch = new SpriteBatch();
-        }
-        spriteBatch = Gameplay.spriteBatch;
-    }
-    @Override
-    public void resume() {
-        super.resume();
-        // Reload SpriteBatch and texture if needed
-        if (Gameplay.spriteBatch == null) {
-            Gameplay.spriteBatch = new SpriteBatch();
-        }
-    }
-
-    private void draw() {
-        ScreenUtils.clear(Color.BROWN);
-        Gameplay.viewPort.apply();
-        spriteBatch.setProjectionMatrix(Gameplay.viewPort.getCamera().combined);
-        spriteBatch.begin();
-        float worldWidth = Gameplay.viewPort.getWorldWidth();
-        float worldHeight = Gameplay.viewPort.getWorldHeight();
-        spriteBatch.draw(backgroundTexture,0,0, worldWidth, worldHeight);
-        for(Obstacle r_Obstacle : Gameplay.obstacles){
-            // if(i == 1){
-            //     System.out.println("Create Obstacle : " + r_Obstacle.getImage() + ", Position :" + r_Obstacle.getY());
-            // }
-            r_Obstacle.draw(spriteBatch);
-        }
-        System.out.println(chickenPlayer.getWidth());
-        chickenPlayer.draw(spriteBatch);
-        spriteBatch.end();
-    }
     @Override
     public void dispose() {
+        spriteBatch.dispose();
+        startScreenBackground.dispose();
+        gameRenderer.dispose();
+        gameOverScreen.dispose();
+        backgroundTexture.dispose();
+        font.dispose();
+        gamePlayManager.dispose();
     }
 }
